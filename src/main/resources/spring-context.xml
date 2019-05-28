@@ -3,8 +3,4 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="question" class="ru.fmtk.hlystov.hw_examination_app.Question">
-
-    </bean>
 </beans>
