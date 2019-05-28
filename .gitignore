@@ -1,3 +1,14 @@
+# Intellij project files
 *.iml
+*.ipr
+*.iws
+.idea/
 
-target/
+#Gradle
+.gradletasknamecache
+.gradle/
+build/
+bin/
+
+#Another files
+.log
