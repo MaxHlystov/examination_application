@@ -1,6 +1,3 @@
 *.iml
-.gradle
-.log
-/build
-/.idea/
-lint.xml
+
+target/
