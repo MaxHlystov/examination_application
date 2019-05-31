@@ -3,4 +3,15 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="appContext" class="ru.fmtk.hlystov.hw_examination_app.services.AppContext"/>
+    <bean id="consoleUserAuthentification" class="ru.fmtk.hlystov.hw_examination_app.services.auth.ConsoleUserAuth"/>
+    <bean id="consolePresenter" class="ru.fmtk.hlystov.hw_examination_app.services.presenter.ConsolePresenter">
+        <constructor-arg name="userAuthentification" ref="consoleUserAuthentification"/>
+    </bean>
+    <bean id="examFactory" class="ru.fmtk.hlystov.hw_examination_app.domain.examination.ExamCSVFactory">
+        <constructor-arg name="resourceName" value="/simple-exam-5-questions.csv"/>
+    </bean>
+    <bean id="answerResultFactory"
+          class="ru.fmtk.hlystov.hw_examination_app.domain.examination.answer.AnswerResultFactory"/>
+    <bean id="statisticsFactory" class="ru.fmtk.hlystov.hw_examination_app.domain.statistics.ExamStatisticsFactory"/>
 </beans>
