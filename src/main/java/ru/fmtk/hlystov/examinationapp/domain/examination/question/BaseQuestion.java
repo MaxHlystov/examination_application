@@ -2,7 +2,6 @@ package ru.fmtk.hlystov.examinationapp.domain.examination.question;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.fmtk.hlystov.examinationapp.Main;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResultImpl;

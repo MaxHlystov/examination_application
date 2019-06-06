@@ -2,7 +2,6 @@ package ru.fmtk.hlystov.examinationapp.services.auth;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.fmtk.hlystov.examinationapp.Main;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.UserImpl;
 

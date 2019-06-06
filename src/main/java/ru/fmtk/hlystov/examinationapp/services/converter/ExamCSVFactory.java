@@ -4,7 +4,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.util.StringUtils;
-import ru.fmtk.hlystov.examinationapp.Main;
 import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
 import ru.fmtk.hlystov.examinationapp.domain.examination.ExamImpl;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
