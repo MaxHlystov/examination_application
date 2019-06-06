@@ -43,13 +43,12 @@ public class Application {
     }
 
     public static void main(String[] args) throws IOException {
-        springContext = new AnnotationConfigApplicationContext(Application.class);
-        Presenter presenter = springContext.getBean(ConsolePresenter.class);
-        QuestionsCSVLoader questionsCSVLoader = springContext.getBean(QuestionsCSVLoader.class);
-        ExamImpl exam = springContext.getBean(ExamImpl.class);
+        Presenter presenter = getSpringContext().getBean(ConsolePresenter.class);
+        QuestionsCSVLoader questionsCSVLoader = getSpringContext().getBean(QuestionsCSVLoader.class);
+        ExamImpl exam = getSpringContext().getBean(ExamImpl.class);
         exam.addQuestions(questionsCSVLoader.readQuestions(
                 getAppConfig().getSCVQuestionsStream()));
-        ExamStatisticsImpl statistics = springContext.getBean(ExamStatisticsImpl.class);
+        ExamStatisticsImpl statistics = getSpringContext().getBean(ExamStatisticsImpl.class);
         Examinator examinator = new ExaminatorImpl(presenter, exam, statistics);
         examinator.performExam();
     }
@@ -57,9 +56,16 @@ public class Application {
     @NotNull
     public static AppConfig getAppConfig() {
         if(appConfig == null) {
-            assert springContext != null;
-            appConfig = springContext.getBean(AppConfig.class);
+            appConfig = getSpringContext().getBean(AppConfig.class);
         }
         return appConfig;
+    }
+
+    @NotNull
+    private static synchronized AnnotationConfigApplicationContext getSpringContext() {
+        if(springContext == null) {
+            springContext = new AnnotationConfigApplicationContext(Application.class);
+        }
+        return springContext;
     }
 }

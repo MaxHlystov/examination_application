@@ -5,10 +5,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class NumericAnswer implements Answer {
-    private final float rightAnswer;
+    private final double value;
+    private final double precision;
 
-    public NumericAnswer(float rightAnswer) {
-        this.rightAnswer = rightAnswer;
+    public NumericAnswer(double value) {
+        this(value, 0.005);
+    }
+
+    public NumericAnswer(double value, double precision) {
+        this.value = value;
+        this.precision = precision;
     }
 
     @Override
@@ -21,11 +27,11 @@ public class NumericAnswer implements Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NumericAnswer that = (NumericAnswer) o;
-        return Float.compare(that.rightAnswer, rightAnswer) == 0;
+        return Math.abs(that.value - value) < this.precision;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rightAnswer);
+        return Objects.hash(value);
     }
 }
