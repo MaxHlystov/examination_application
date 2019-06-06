@@ -2,6 +2,8 @@ package ru.fmtk.hlystov.examinationapp.services.auth;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.User;
@@ -22,8 +24,9 @@ public class ConsoleUserAuth implements UserAuthentification {
     @NotNull
     private final PrintStream out;
 
-    public ConsoleUserAuth() {
-        this(Application.getAppConfig(), System.in, System.out);
+    @Autowired
+    public ConsoleUserAuth(@Qualifier("appConfig") @NotNull AppConfig appConfig) {
+        this(appConfig, System.in, System.out);
     }
 
     public ConsoleUserAuth(@NotNull AppConfig appConfig, @NotNull InputStream in, @NotNull PrintStream out) {
