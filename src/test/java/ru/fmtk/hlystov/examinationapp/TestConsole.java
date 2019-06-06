@@ -7,10 +7,10 @@ import java.util.Scanner;
 
 @Service
 public class TestConsole {
-    private PipedOutputStream outToInput;
-    private ByteArrayOutputStream outputBytes;
-    private InputStream inputStream;
-    private PrintStream printStream;
+    private final PipedOutputStream outToInput;
+    private final ByteArrayOutputStream outputBytes;
+    private final InputStream inputStream;
+    private final PrintStream printStream;
 
     public TestConsole() throws IOException {
         outputBytes = new ByteArrayOutputStream();

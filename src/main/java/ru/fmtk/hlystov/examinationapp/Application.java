@@ -23,7 +23,7 @@ import java.io.IOException;
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
-    @NotNull
+    @Nullable
     private static AnnotationConfigApplicationContext springContext;
     @Nullable
     private static AppConfig appConfig;

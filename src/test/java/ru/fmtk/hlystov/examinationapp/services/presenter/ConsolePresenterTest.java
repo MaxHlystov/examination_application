@@ -25,22 +25,19 @@ import static org.junit.Assert.*;
 
 public class ConsolePresenterTest {
     private TestConsole testConsole;
-    private AppConfig appConfig;
     private User user;
-    private UserAuthStub userAuth;
-    private StringsToAnswerConverter answerConverter;
     private ConsolePresenter consolePresenter;
 
     @Before
     public void initTest() throws IOException {
         testConsole = new TestConsole();
         Application app = new Application();
-        appConfig = new AppConfig(new Locale("en", "En"),
+        AppConfig appConfig = new AppConfig(new Locale("en", "En"),
                 "simple-exam-5-questions.csv",
                 app.messageSource());
         user = new UserImpl("a", "b");
-        userAuth = new UserAuthStub(user);
-        answerConverter = new StringsToAnswerConverter();
+        UserAuthStub userAuth = new UserAuthStub(user);
+        StringsToAnswerConverter answerConverter = new StringsToAnswerConverter();
         consolePresenter = new ConsolePresenter(appConfig, userAuth, answerConverter,
                 testConsole.getInputStream(), testConsole.getPrintStream());
     }
@@ -91,38 +88,6 @@ public class ConsolePresenterTest {
         testConsole.printlnToStdin(Double.toString(rightNumber + 100.0));
         Answer newAnswer = consolePresenter.askQuestion(number, question);
         assertFalse(rightAnswer.isEquals(newAnswer));
-    }
-
-    @Test
-    public void showStatistics() {
-    }
-
-    @Test
-    public void showExamStart() {
-    }
-
-    @Test
-    public void showGreetengs() {
-    }
-
-    @Test
-    public void showUserNeeded() {
-    }
-
-    @Test
-    public void showGoodBy() {
-    }
-
-    @Test
-    public void showAnswerResult() {
-    }
-
-    @Test
-    public void showExamResult() {
-    }
-
-    @Test
-    public void getResString() {
     }
 
     public class UserAuthStub implements UserAuthentification {

@@ -13,10 +13,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ConsoleUserAuthTest {
     private TestConsole testConsole;
-    private Application app;
     private AppConfig appConfig;
     private ConsoleUserAuth userAuth;
 
@@ -27,7 +27,7 @@ public class ConsoleUserAuthTest {
     }
 
     private void setAppConfig(@NotNull Locale locale) {
-        app = new Application();
+        Application app = new Application();
         appConfig = new AppConfig(locale, "simple-exam-5-questions.csv", app.messageSource());
         userAuth = new ConsoleUserAuth(appConfig,
                 testConsole.getInputStream(), testConsole.getPrintStream());
@@ -40,6 +40,7 @@ public class ConsoleUserAuthTest {
         testConsole.printlnToStdin(firstName);
         testConsole.printlnToStdin(secondName);
         User user = userAuth.getUser();
+        assertNotNull(user);
         assertEquals(firstName, user.getFirstName());
         assertEquals(secondName, user.getSecondName());
     }
@@ -50,6 +51,7 @@ public class ConsoleUserAuthTest {
         testConsole.printlnToStdin(firstName);
         testConsole.printlnToStdin("");
         User user = userAuth.getUser();
+        assertNotNull(user);
         assertEquals(firstName, user.getFirstName());
         assertEquals("", user.getSecondName());
     }

@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.UserImpl;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;

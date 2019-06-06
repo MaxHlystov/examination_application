@@ -11,6 +11,7 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.OptionsQuestio
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.SingleQuestion;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -27,7 +28,7 @@ public class StringsToAnswerConverterTest {
     @Test
     public void convertNumericAnswer() {
         double number = 800.139;
-        List<String> answers = Arrays.asList(new String[]{Double.toString(number)});
+        List<String> answers = Collections.singletonList(Double.toString(number));
         Answer answer = converter.convertAnswer(NumericQuestion.class, answers);
         assertTrue((new NumericAnswer(number)).isEquals(answer));
     }
@@ -35,7 +36,7 @@ public class StringsToAnswerConverterTest {
     @Test
     public void convertRightSingleAnswer() {
         int value = 1;
-        List<String> answers = Arrays.asList(new String[]{Integer.toString(value), "2", "3"});
+        List<String> answers = Arrays.asList(Integer.toString(value), "2", "3");
         Answer answer = converter.convertAnswer(SingleQuestion.class, answers);
         assertTrue(new SingleAnswer(value).isEquals(answer));
     }
@@ -43,44 +44,41 @@ public class StringsToAnswerConverterTest {
     @Test
     public void convertWrongSingleAnswer() {
         int value = 1;
-        List<String> answers = Arrays.asList(new String[]{"2", Integer.toString(value), "3"});
+        List<String> answers = Arrays.asList("2", Integer.toString(value), "3");
         Answer answer = converter.convertAnswer(SingleQuestion.class, answers);
         assertFalse(new SingleAnswer(value).isEquals(answer));
     }
 
     @Test
     public void convertStraightOrderOptionsAnswer() {
-        List<Integer> intAnswers = Arrays.asList(new Integer[]{1, 2, 3, 4});
-        List<String> answers = Arrays.asList(new String[]{"1", "2", "3", "4"});
+        List<Integer> intAnswers = Arrays.asList(1, 2, 3, 4);
+        List<String> answers = Arrays.asList("1", "2", "3", "4");
         Answer answer = converter.convertAnswer(OptionsQuestion.class, answers);
         assertTrue(new OptionsAnswer(intAnswers).isEquals(answer));
     }
 
     @Test
     public void convertRandomOrderOptionsAnswer() {
-        List<Integer> intAnswers = Arrays.asList(new Integer[]{2, 1, 3});
-        List<String> answers = Arrays.asList(new String[]{"3", "2", "1"});
+        List<Integer> intAnswers = Arrays.asList(2, 1, 3);
+        List<String> answers = Arrays.asList("3", "2", "1");
         Answer answer = converter.convertAnswer(OptionsQuestion.class, answers);
         assertTrue(new OptionsAnswer(intAnswers).isEquals(answer));
     }
 
     @Test
     public void convertRepetedOptionsAnswer() {
-        List<Integer> intAnswers = Arrays.asList(new Integer[]{1, 2, 1});
-        List<String> answers = Arrays.asList(new String[]{"2", "1", "2"});
+        List<Integer> intAnswers = Arrays.asList(1, 2, 1);
+        List<String> answers = Arrays.asList("2", "1", "2");
         Answer answer = converter.convertAnswer(OptionsQuestion.class, answers);
         assertTrue(new OptionsAnswer(intAnswers).isEquals(answer));
     }
 
     @Test
     public void convertWrondOptionsAnswer() {
-        List<Integer> intAnswers = Arrays.asList(new Integer[]{1, 2, 3, 4});
-        List<String> answers = Arrays.asList(new String[]{"5", "2", "3", "4"});
+        List<Integer> intAnswers = Arrays.asList(1, 2, 3, 4);
+        List<String> answers = Arrays.asList("5", "2", "3", "4");
         Answer answer = converter.convertAnswer(OptionsQuestion.class, answers);
         assertFalse(new OptionsAnswer(intAnswers).isEquals(answer));
     }
 
-    @Test
-    public void addConverter() {
-    }
 }
