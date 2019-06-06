@@ -16,16 +16,19 @@ import java.util.Scanner;
 @Service
 public class ConsoleUserAuth implements UserAuthentification {
     @NotNull
+    private final AppConfig appConfig;
+    @NotNull
     private final Scanner sc;
     @NotNull
     private final PrintStream out;
 
     public ConsoleUserAuth() {
-        this(System.in, System.out);
+        this(Application.getAppConfig(), System.in, System.out);
     }
 
-    public ConsoleUserAuth(@NotNull InputStream in, @NotNull PrintStream out) {
-        sc = new Scanner(in);
+    public ConsoleUserAuth(@NotNull AppConfig appConfig, @NotNull InputStream in, @NotNull PrintStream out) {
+        this.appConfig = appConfig;
+        this.sc = new Scanner(in);
         this.out = out;
     }
 
@@ -34,11 +37,10 @@ public class ConsoleUserAuth implements UserAuthentification {
     public User getUser() {
         User user = null;
         try {
-            AppConfig appConfig = Application.getAppConfig();
             out.println(appConfig.getMessage("authentification.whats-first-name", null));
-            String firstName = sc.next();
+            String firstName = sc.nextLine();
             out.println(appConfig.getMessage("authentification.whats-second-name", null));
-            String secondName = sc.next();
+            String secondName = sc.nextLine();
             user = new UserImpl(firstName, secondName);
         } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
         }

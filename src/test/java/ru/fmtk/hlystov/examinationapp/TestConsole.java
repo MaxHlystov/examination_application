@@ -19,6 +19,11 @@ public class TestConsole {
         inputStream = new PipedInputStream(outToInput);
     }
 
+    public void clearScreen() {
+        printStream.flush();
+        outputBytes.reset();
+    }
+
     public Scanner getCurrentScreenScanner() {
         printStream.flush();
         return new Scanner(new ByteArrayInputStream(outputBytes.toByteArray()));
