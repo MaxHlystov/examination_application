@@ -49,11 +49,12 @@ public class AppConfig {
         return messageSource.getMessage(code, args, locale);
     }
 
+    @NotNull
     public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(Locale locale) {
+    public void setLocale(@NotNull Locale locale) {
         this.locale = locale;
     }
 

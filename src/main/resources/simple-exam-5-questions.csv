@@ -1,7 +1,6 @@
 "type","title","option1","option2","option3","option4","option5","answer1","answer2","answer3","answer4","answer5"
-"NUMBER_QUESTION","Сколько будет 5+5",,,,,,10,,,,
-"OPTIONS_QUESTION","Выбирете фрукты","Груша","Морковь","Тыква","Арбуз","Помидор",1,2,,,
-"SINGLE_QUESTION","Кто написал поэму ""Евгений Онегин""?","Лермонтов","Гоголь","Салтыков-Щедрин","Маяковкий","Пушкин",5,,,,
+"SINGLE_QUESTION","Select one correct statement about the standard class LocalDate.","The invocation LocalDate.parse(""2017-09-21"") creates an instance represents 21st September 2017.","The instance method plusDays returns the same instance of this class.","The method getDayOfYear returns the same as the method getDayOfMonth.","The instance method withMonth changes the current instance of the class.",,1,,,,
+"OPTIONS_QUESTION","Select all statements that equal to the date 2017-10-12 (year-month-day).","LocalDate.of(2017, 10, 11).withDayOfMonth(12)","LocalDate.of(2017, 10, 1).withDayOfYear(12)","LocalDate.of(2018, 10, 12).minusYears(1)","LocalDate.of(2017, 12, 10)","LocalDate.of(2017, 1, 1).plusMonths(9).withDayOfMonth(12)",1,3,5,,
 "NUMBER_QUESTION","Количество значащих нулей в двоичной записи десятичного числа 129 равно?",,,,,,6,,,,
 "SINGLE_QUESTION","Владельцы  магазина N задумались об увеличении числа покупателей
 и решили оценить, на сколько в среднем будет больше покупателей,

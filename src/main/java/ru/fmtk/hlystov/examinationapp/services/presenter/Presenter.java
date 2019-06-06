@@ -31,4 +31,6 @@ public interface Presenter {
     void showGoodBy();
 
     void showAnswerResult(@NotNull AnswerResult result);
+
+    void showExamResult(boolean success);
 }

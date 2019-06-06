@@ -52,8 +52,7 @@ public class QuestionsCSVLoader {
         List<String> options = getValuableSubarray(line, 2, 6);
         List<String> answers = getValuableSubarray(line, 7, 11);
         if (!StringUtils.isEmpty(type) && !StringUtils.isEmpty(title) && answers.size() > 0) {
-            Question question = questionConverter.convertQuestion(type, title, options, answers);
-            return question;
+            return questionConverter.convertQuestion(type, title, options, answers);
         }
         return null;
     }

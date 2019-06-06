@@ -2,10 +2,11 @@ package ru.fmtk.hlystov.examinationapp.domain.examination.question;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResultImpl;
-import ru.fmtk.hlystov.examinationapp.services.LocalizationService;
+import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public abstract class BaseQuestion implements Question {
     @NotNull
     private final Answer rightAnswer;
 
-    public BaseQuestion(@NotNull String title, @NotNull List<String> options,
+    public BaseQuestion(@NotNull String title,
+                        @NotNull List<String> options,
                         @NotNull Answer rightAnswer) {
         this.title = title;
         this.options = options;
@@ -39,13 +41,13 @@ public abstract class BaseQuestion implements Question {
     @Override
     @NotNull
     public AnswerResult checkAnswers(@Nullable Answer answer) {
-        LocalizationService localizationService = Main.getLocalizationService();
+        AppConfig appConfig = Application.getAppConfig();
         StringBuilder sb = new StringBuilder();
         boolean equals = rightAnswer.isEquals(answer);
         if (equals) {
-            sb.append(localizationService.getString("answer-result-factory.ok"));
+            sb.append(appConfig.getMessage("answer-result-factory.ok", null));
         } else {
-            sb.append(localizationService.getString("answer-result-factory.wrong"));
+            sb.append(appConfig.getMessage("answer-result-factory.wrong", null));
         }
         return new AnswerResultImpl(sb.toString(), equals);
     }

@@ -2,7 +2,11 @@ package ru.fmtk.hlystov.examinationapp.services.presenter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
@@ -10,7 +14,6 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestio
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.OptionsQuestion;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
-import ru.fmtk.hlystov.examinationapp.services.LocalizationService;
 import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
@@ -22,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+@Service
 public class ConsolePresenter implements Presenter {
     @NotNull
     private final UserAuthentification userAuthentification;
@@ -31,17 +35,17 @@ public class ConsolePresenter implements Presenter {
     private final Scanner sc;
     @NotNull
     private final PrintStream out;
-    @Nullable
-    private LocalizationService localizationService;
 
-    public ConsolePresenter(@NotNull UserAuthentification userAuthentification,
+    @Autowired
+    public ConsolePresenter(@Qualifier("consoleUserAuth") @NotNull UserAuthentification userAuthentification,
                             @NotNull StringsToAnswerConverter answerConverter) {
         this(userAuthentification, answerConverter, System.in, System.out);
     }
 
     public ConsolePresenter(@NotNull UserAuthentification userAuthentification,
                             @NotNull StringsToAnswerConverter answerConverter,
-                            @NotNull InputStream in, @NotNull PrintStream out) {
+                            @NotNull InputStream in,
+                            @NotNull PrintStream out) {
         this.userAuthentification = userAuthentification;
         this.answerConverter = answerConverter;
         this.sc = new Scanner(in);
@@ -101,6 +105,7 @@ public class ConsolePresenter implements Presenter {
 
     @Override
     public void showExamStart() {
+        showMessage(getResString("presenter.exam-start"));
     }
 
     @Override
@@ -124,6 +129,12 @@ public class ConsolePresenter implements Presenter {
                 result.getDescription()));
     }
 
+    @Override
+    public void showExamResult(boolean success) {
+        showMessage(getResString("presenter.long-ine"));
+        showMessage(getResString(success ? "presenter.exam-success" : "presenter.exam-unsuccess"));
+    }
+
     @NotNull
     private String getInputPrompt(Class<? extends Question> aClass) {
         if (aClass.equals(NumericQuestion.class)) {
@@ -144,9 +155,7 @@ public class ConsolePresenter implements Presenter {
 
     @NotNull
     String getResString(@NotNull String stringName) {
-        if (localizationService == null) {
-            localizationService = Main.getLocalizationService();
-        }
-        return localizationService.getString(stringName);
+        String message = Application.getAppConfig().getMessage(stringName, null);
+        return message == null ? "" : message;
     }
 }

@@ -15,7 +15,7 @@ public class ExaminatorImpl implements Examinator {
     @NotNull
     private final Exam exam;
     @NotNull
-    private ExamStatistics statistics;
+    private final ExamStatistics statistics;
 
     public ExaminatorImpl(@NotNull Presenter presenter, @NotNull Exam exam,
                           @NotNull ExamStatistics statistics) {
@@ -30,17 +30,9 @@ public class ExaminatorImpl implements Examinator {
         User user = presenter.getUser();
         presenter.showExamStart();
         if (user != null) {
-            for (int index = 0; index < exam.questionsNumber(); ++index) {
-                Question question = exam.getQuestion(index);
-                if (question != null) {
-                    Answer answer = presenter.askQuestion(index + 1, question);
-                    AnswerResult result = question.checkAnswers(answer);
-                    presenter.showAnswerResult(result);
-                    statistics.addResult(index + 1, question, answer, result);
-                }
-
-            }
+            askQuestions();
             presenter.showStatistics(statistics);
+            presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
         } else {
             presenter.showUserNeeded();
         }
@@ -59,5 +51,16 @@ public class ExaminatorImpl implements Examinator {
         return presenter;
     }
 
+    private void askQuestions() {
+        for (int index = 0; index < exam.questionsNumber(); ++index) {
+            Question question = exam.getQuestion(index);
+            if (question != null) {
+                Answer answer = presenter.askQuestion(index + 1, question);
+                AnswerResult result = question.checkAnswers(answer);
+                presenter.showAnswerResult(result);
+                statistics.addResult(index + 1, question, answer, result);
+            }
+        }
+    }
 
 }

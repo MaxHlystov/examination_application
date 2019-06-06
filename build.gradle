@@ -16,4 +16,5 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: '5.1.7.RELEASE'
     compile group: 'com.opencsv', name: 'opencsv', version: '4.6'
     compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
+    compile group: 'org.apache.directory.studio', name: 'org.apache.commons.io', version: '2.4'
 }

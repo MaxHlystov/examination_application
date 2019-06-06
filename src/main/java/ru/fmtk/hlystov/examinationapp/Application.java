@@ -2,8 +2,6 @@ package ru.fmtk.hlystov.examinationapp;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -18,7 +16,6 @@ import ru.fmtk.hlystov.examinationapp.services.presenter.ConsolePresenter;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import java.io.IOException;
-import java.util.Locale;
 
 @Configuration
 @ComponentScan
@@ -26,9 +23,9 @@ import java.util.Locale;
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
-    @Nullable
-    private static AnnotationConfigApplicationContext springContext;
     @NotNull
+    private static AnnotationConfigApplicationContext springContext;
+    @Nullable
     private static AppConfig appConfig;
 
     @Bean
@@ -60,6 +57,7 @@ public class Application {
     @NotNull
     public static AppConfig getAppConfig() {
         if(appConfig == null) {
+            assert springContext != null;
             appConfig = springContext.getBean(AppConfig.class);
         }
         return appConfig;

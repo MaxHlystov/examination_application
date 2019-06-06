@@ -24,6 +24,7 @@ public class ConsolePresenterTest {
 
     public class UserAuthStub implements UserAuthentification {
         @NotNull
+        final
         User user;
 
         public UserAuthStub(@NotNull User user) {
