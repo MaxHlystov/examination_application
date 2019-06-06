@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import ru.fmtk.hlystov.examinationapp.Application;
+import ru.fmtk.hlystov.examinationapp.TestConsole;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.UserImpl;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
@@ -14,7 +15,7 @@ import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,10 +24,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public class ConsolePresenterTest {
-    private PipedOutputStream outToInput;
-    private ByteArrayOutputStream outputBytes;
-    private InputStream inputStream;
-    private PrintStream printStream;
+    private TestConsole testConsole;
     private AppConfig appConfig;
     private User user;
     private UserAuthStub userAuth;
@@ -35,34 +33,30 @@ public class ConsolePresenterTest {
 
     @Before
     public void initTest() throws IOException {
+        testConsole = new TestConsole();
         Application app = new Application();
         appConfig = new AppConfig(new Locale("en", "En"),
                 "simple-exam-5-questions.csv",
                 app.messageSource());
-        outputBytes = new ByteArrayOutputStream();
-        printStream = new PrintStream(outputBytes);
-        outToInput = new PipedOutputStream();
-        inputStream = new PipedInputStream(outToInput);
         user = new UserImpl("a", "b");
         userAuth = new UserAuthStub(user);
         answerConverter = new StringsToAnswerConverter();
         consolePresenter = new ConsolePresenter(appConfig, userAuth, answerConverter,
-                inputStream, printStream);
+                testConsole.getInputStream(), testConsole.getPrintStream());
     }
 
     @Test
     public void showMessage() {
         String messageEn = "Test message 1234!";
         consolePresenter.showMessage(messageEn);
-        printStream.flush();
-        Scanner sc = new Scanner(new ByteArrayInputStream(outputBytes.toByteArray()));
+        Scanner sc = testConsole.getCurrentScreenScanner();
         assertEquals(messageEn, sc.nextLine());
     }
 
     @Test
     public void readString() throws IOException {
         String messageEn = "Test message 1234!";
-        outToInput.write((messageEn + '\n').getBytes());
+        testConsole.printlnToStdin(messageEn);
         String newString = consolePresenter.readString();
         assertEquals(messageEn, newString);
     }
@@ -81,8 +75,7 @@ public class ConsolePresenterTest {
         NumericAnswer rightAnswer = new NumericAnswer(rightNumber);
         int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
-        outToInput.write((Double.toString(rightNumber) + '\n').getBytes());
-        outToInput.flush();
+        testConsole.printlnToStdin(Double.toString(rightNumber));
         Answer newAnswer = consolePresenter.askQuestion(number, question);
         assertTrue(rightAnswer.isEquals(newAnswer));
     }
@@ -95,8 +88,7 @@ public class ConsolePresenterTest {
         NumericAnswer rightAnswer = new NumericAnswer(rightNumber);
         int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
-        outToInput.write((Double.toString(rightNumber * 10.0) + '\n').getBytes());
-        outToInput.flush();
+        testConsole.printlnToStdin(Double.toString(rightNumber + 100.0));
         Answer newAnswer = consolePresenter.askQuestion(number, question);
         assertFalse(rightAnswer.isEquals(newAnswer));
     }
