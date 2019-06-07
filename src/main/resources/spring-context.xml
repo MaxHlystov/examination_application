@@ -3,4 +3,20 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="localizationService" class="ru.fmtk.hlystov.examinationapp.services.LocalizationService"/>
+    <bean id="stringsToAnswerConverter"
+          class="ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter"/>
+    <bean id="questionConverter" class="ru.fmtk.hlystov.examinationapp.services.converter.StringsToQuestionsConverter">
+        <constructor-arg name="answersConverter" ref="stringsToAnswerConverter"/>
+    </bean>
+    <bean id="consoleUserAuthentification" class="ru.fmtk.hlystov.examinationapp.services.auth.ConsoleUserAuth"/>
+    <bean id="consolePresenter" class="ru.fmtk.hlystov.examinationapp.services.presenter.ConsolePresenter">
+        <constructor-arg name="userAuthentification" ref="consoleUserAuthentification"/>
+        <constructor-arg name="answerConverter" ref="stringsToAnswerConverter"/>
+    </bean>
+    <bean id="examFactory" class="ru.fmtk.hlystov.examinationapp.services.converter.ExamCSVFactory">
+        <constructor-arg name="resourceName" value="/simple-exam-5-questions.csv"/>
+        <constructor-arg name="questionConverter" ref="questionConverter"/>
+    </bean>
+    <bean id="statistics" class="ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatisticsImpl"/>
 </beans>
