@@ -34,19 +34,11 @@ public class StringsToAnswerConverterTest {
     }
 
     @Test
-    public void convertRightSingleAnswer() {
+    public void convertSingleAnswer() {
         int value = 1;
         List<String> answers = Arrays.asList(Integer.toString(value), "2", "3");
         Answer answer = converter.convertAnswer(SingleQuestion.class, answers);
         assertTrue(new SingleAnswer(value).isEquals(answer));
-    }
-
-    @Test
-    public void convertWrongSingleAnswer() {
-        int value = 1;
-        List<String> answers = Arrays.asList("2", Integer.toString(value), "3");
-        Answer answer = converter.convertAnswer(SingleQuestion.class, answers);
-        assertFalse(new SingleAnswer(value).isEquals(answer));
     }
 
     @Test
