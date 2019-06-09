@@ -24,7 +24,7 @@ public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
     @Nullable
-    private static AnnotationConfigApplicationContext springContext;
+    private static volatile AnnotationConfigApplicationContext springContext;
     @Nullable
     private static AppConfig appConfig;
 
@@ -55,16 +55,20 @@ public class Application {
 
     @NotNull
     public static AppConfig getAppConfig() {
-        if(appConfig == null) {
+        if (appConfig == null) {
             appConfig = getSpringContext().getBean(AppConfig.class);
         }
         return appConfig;
     }
 
     @NotNull
-    private static synchronized AnnotationConfigApplicationContext getSpringContext() {
-        if(springContext == null) {
-            springContext = new AnnotationConfigApplicationContext(Application.class);
+    private static AnnotationConfigApplicationContext getSpringContext() {
+        if (springContext == null) {
+            synchronized (Application.class) {
+                if (springContext == null) {
+                    springContext = new AnnotationConfigApplicationContext(Application.class);
+                }
+            }
         }
         return springContext;
     }
