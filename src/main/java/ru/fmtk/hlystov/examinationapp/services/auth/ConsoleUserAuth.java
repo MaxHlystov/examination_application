@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.User;
-import ru.fmtk.hlystov.examinationapp.domain.UserImpl;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
 import java.io.InputStream;
@@ -43,7 +42,7 @@ public class ConsoleUserAuth implements UserAuthentification {
             String firstName = sc.nextLine();
             out.println(appConfig.getMessage("authentification.whats-second-name", null));
             String secondName = sc.nextLine();
-            user = new UserImpl(firstName, secondName);
+            user = new User(firstName, secondName);
         } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
         }
         return user;
