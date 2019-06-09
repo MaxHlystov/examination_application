@@ -6,7 +6,6 @@ import org.junit.Test;
 import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.TestConsole;
 import ru.fmtk.hlystov.examinationapp.domain.User;
-import ru.fmtk.hlystov.examinationapp.domain.UserImpl;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.NumericAnswer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
@@ -35,7 +34,7 @@ public class ConsolePresenterTest {
         AppConfig appConfig = new AppConfig(new Locale("en", "En"),
                 "simple-exam-5-questions.csv",
                 app.messageSource());
-        user = new UserImpl("a", "b");
+        user = new User("a", "b");
         UserAuthStub userAuth = new UserAuthStub(user);
         StringsToAnswerConverter answerConverter = new StringsToAnswerConverter();
         consolePresenter = new ConsolePresenter(appConfig, userAuth, answerConverter,
