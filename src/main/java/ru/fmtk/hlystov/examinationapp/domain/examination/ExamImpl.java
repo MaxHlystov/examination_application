@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Service
@@ -34,12 +31,11 @@ public class ExamImpl implements Exam {
     }
 
     @Override
-    @Nullable
-    public Question getQuestion(int index) {
+    public Optional<Question> getQuestion(int index) {
         if (index < questionsNumber()) {
-            return questions.get(index);
+            return Optional.of(questions.get(index));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

@@ -9,6 +9,9 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
+import java.util.AbstractMap;
+import java.util.stream.IntStream;
+
 public class ExaminatorImpl implements Examinator {
     @NotNull
     private final Presenter presenter;
@@ -52,15 +55,16 @@ public class ExaminatorImpl implements Examinator {
     }
 
     private void askQuestions() {
-        for (int index = 0; index < exam.questionsNumber(); ++index) {
-            Question question = exam.getQuestion(index);
-            if (question != null) {
-                Answer answer = presenter.askQuestion(index + 1, question);
-                AnswerResult result = question.checkAnswers(answer);
-                presenter.showAnswerResult(result);
-                statistics.addResult(index + 1, question, answer, result);
-            }
-        }
+        IntStream.range(0, exam.questionsNumber())
+                .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, exam.getQuestion(index)))
+                .filter(pair -> pair.getValue().isPresent())
+                .forEachOrdered(pair -> askQuestion(pair.getKey(), pair.getValue().get()));
     }
 
+    private void askQuestion(int index, @NotNull Question question) {
+        Answer answer = presenter.askQuestion(index + 1, question);
+        AnswerResult result = question.checkAnswers(answer);
+        presenter.showAnswerResult(result);
+        statistics.addResult(index + 1, question, answer, result);
+    }
 }
