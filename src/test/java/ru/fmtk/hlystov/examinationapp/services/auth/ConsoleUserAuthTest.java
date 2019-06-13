@@ -10,10 +10,10 @@ import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ConsoleUserAuthTest {
     private TestConsole testConsole;
@@ -39,10 +39,10 @@ public class ConsoleUserAuthTest {
         String secondName = "Second name %$#";
         testConsole.printlnToStdin(firstName);
         testConsole.printlnToStdin(secondName);
-        User user = userAuth.getUser();
-        assertNotNull(user);
-        assertEquals(firstName, user.getFirstName());
-        assertEquals(secondName, user.getSecondName());
+        Optional<User> otpUser = userAuth.getUser();
+        assertTrue(otpUser.isPresent());
+        assertEquals(firstName, otpUser.get().getFirstName());
+        assertEquals(secondName, otpUser.get().getSecondName());
     }
 
     @Test
@@ -50,10 +50,10 @@ public class ConsoleUserAuthTest {
         String firstName = "First Name 1234";
         testConsole.printlnToStdin(firstName);
         testConsole.printlnToStdin("");
-        User user = userAuth.getUser();
-        assertNotNull(user);
-        assertEquals(firstName, user.getFirstName());
-        assertEquals("", user.getSecondName());
+        Optional<User> otpUser = userAuth.getUser();
+        assertTrue(otpUser.isPresent());
+        assertEquals(firstName, otpUser.get().getFirstName());
+        assertEquals("", otpUser.get().getSecondName());
     }
 
     @Test

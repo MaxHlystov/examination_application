@@ -15,10 +15,7 @@ import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -53,14 +50,15 @@ public class ConsolePresenterTest {
     public void readString() throws IOException {
         String messageEn = "Test message 1234!";
         testConsole.printlnToStdin(messageEn);
-        String newString = consolePresenter.readString();
-        assertEquals(messageEn, newString);
+        Optional<String> newString = consolePresenter.readString();
+        assertTrue(newString.isPresent());
+        assertEquals(messageEn, newString.get());
     }
 
     @Test
-    public void getUserNotNull() {
-        User gotUser = consolePresenter.getUser();
-        assertEquals(user, gotUser);
+    public void getUserNotEmpty() {
+        Optional<User> gotUser = consolePresenter.getUser();
+        assertTrue(gotUser.isPresent());
     }
 
     @Test
@@ -72,8 +70,9 @@ public class ConsolePresenterTest {
         int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
         testConsole.printlnToStdin(Double.toString(rightNumber));
-        Answer newAnswer = consolePresenter.askQuestion(number, question);
-        assertTrue(rightAnswer.isEquals(newAnswer));
+        Optional<? extends Answer> newAnswer = consolePresenter.askQuestion(number, question);
+        assertTrue(newAnswer.isPresent());
+        assertTrue(rightAnswer.isEquals(newAnswer.get()));
     }
 
     @Test
@@ -85,8 +84,9 @@ public class ConsolePresenterTest {
         int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
         testConsole.printlnToStdin(Double.toString(rightNumber + 100.0));
-        Answer newAnswer = consolePresenter.askQuestion(number, question);
-        assertFalse(rightAnswer.isEquals(newAnswer));
+        Optional<? extends Answer> newAnswer = consolePresenter.askQuestion(number, question);
+        assertTrue(newAnswer.isPresent());
+        assertFalse(rightAnswer.isEquals(newAnswer.get()));
     }
 
     public class UserAuthStub implements UserAuthentification {
@@ -100,8 +100,8 @@ public class ConsolePresenterTest {
 
         @Override
         @NotNull
-        public User getUser() {
-            return user;
+        public Optional<User> getUser() {
+            return Optional.ofNullable(user);
         }
     }
 }

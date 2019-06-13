@@ -1,7 +1,6 @@
 package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
@@ -48,7 +47,6 @@ public class ExamImpl implements Exam {
         this.questions.addAll(questions);
     }
 
-    @NotNull
     public Iterator<Question> iterator() {
         return questions.iterator();
     }

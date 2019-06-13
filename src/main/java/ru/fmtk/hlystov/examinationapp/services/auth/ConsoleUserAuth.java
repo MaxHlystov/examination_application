@@ -1,7 +1,6 @@
 package ru.fmtk.hlystov.examinationapp.services.auth;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
@@ -34,8 +34,8 @@ public class ConsoleUserAuth implements UserAuthentification {
     }
 
     @Override
-    @Nullable
-    public User getUser() {
+    @NotNull
+    public Optional<User> getUser() {
         User user = null;
         try {
             out.println(appConfig.getMessage("authentification.whats-first-name", null));
@@ -45,6 +45,6 @@ public class ConsoleUserAuth implements UserAuthentification {
             user = new User(firstName, secondName);
         } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 }

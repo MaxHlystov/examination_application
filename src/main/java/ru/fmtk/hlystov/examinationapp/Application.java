@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
 import ru.fmtk.hlystov.examinationapp.domain.examination.ExamImpl;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatisticsImpl;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
@@ -16,6 +17,8 @@ import ru.fmtk.hlystov.examinationapp.services.presenter.ConsolePresenter;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 
 @Configuration
 @ComponentScan
@@ -42,15 +45,25 @@ public class Application {
         return ms;
     }
 
-    public static void main(String[] args) throws IOException {
-        Presenter presenter = getSpringContext().getBean(ConsolePresenter.class);
-        QuestionsCSVLoader questionsCSVLoader = getSpringContext().getBean(QuestionsCSVLoader.class);
+    public static void main(String[] args) {
+        getAppConfig().getSCVQuestionsStream().flatMap(Application::getExamByQuestionsStream)
+                .ifPresent(exam -> {
+                    Presenter presenter = getSpringContext().getBean(ConsolePresenter.class);
+                    ExamStatisticsImpl statistics = getSpringContext().getBean(ExamStatisticsImpl.class);
+                    Examinator examinator = new ExaminatorImpl(presenter, exam, statistics);
+                    examinator.performExam();
+                });
+    }
+
+    private static Optional<Exam> getExamByQuestionsStream(@NotNull InputStream inputStream) {
         ExamImpl exam = getSpringContext().getBean(ExamImpl.class);
-        exam.addQuestions(questionsCSVLoader.readQuestions(
-                getAppConfig().getSCVQuestionsStream()));
-        ExamStatisticsImpl statistics = getSpringContext().getBean(ExamStatisticsImpl.class);
-        Examinator examinator = new ExaminatorImpl(presenter, exam, statistics);
-        examinator.performExam();
+        QuestionsCSVLoader questionsCSVLoader = getSpringContext().getBean(QuestionsCSVLoader.class);
+        try {
+            exam.addQuestions(questionsCSVLoader.readQuestions(inputStream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(exam);
     }
 
     @NotNull
