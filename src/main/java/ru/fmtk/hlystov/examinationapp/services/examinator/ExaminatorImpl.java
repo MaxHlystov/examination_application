@@ -66,6 +66,6 @@ public class ExaminatorImpl implements Examinator {
         Answer answer = presenter.askQuestion(index + 1, question).orElse(null);
         AnswerResult result = question.checkAnswers(answer);
         presenter.showAnswerResult(result);
-        statistics.addResult(index + 1, question, answer, result);
+        statistics.addResult(result);
     }
 }

@@ -101,7 +101,7 @@ public class ConsolePresenterTest {
         @Override
         @NotNull
         public Optional<User> getUser() {
-            return Optional.ofNullable(user);
+            return Optional.of(user);
         }
     }
 }

@@ -47,6 +47,7 @@ public class ExamImpl implements Exam {
         this.questions.addAll(questions);
     }
 
+    @NotNull
     @Override
     public Iterator<Question> iterator() {
         return questions.iterator();

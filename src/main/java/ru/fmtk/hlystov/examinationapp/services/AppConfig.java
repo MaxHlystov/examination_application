@@ -69,7 +69,7 @@ public class AppConfig {
         return Optional.ofNullable(Application.class.getResourceAsStream(baseResourceName));
     }
 
-    public void setBaseCSVResourceName(String baseCSVResourceName) {
+    public void setBaseCSVResourceName(@NotNull String baseCSVResourceName) {
         this.baseCSVResourceName = baseCSVResourceName;
     }
 }

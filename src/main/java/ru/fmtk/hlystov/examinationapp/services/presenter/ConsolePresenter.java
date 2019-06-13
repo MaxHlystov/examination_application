@@ -63,7 +63,7 @@ public class ConsolePresenter implements Presenter {
     public Optional<String> readString() {
         try {
             return Optional.ofNullable(sc.nextLine());
-        } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
+        } catch (NoSuchElementException | IllegalStateException ignored) {
         }
         return Optional.empty();
     }

@@ -65,7 +65,7 @@ public class Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Optional.ofNullable(exam);
+        return Optional.of(exam);
     }
 
     @NotNull

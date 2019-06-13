@@ -102,7 +102,7 @@ public class ExamImplTest {
         ExamImpl exam = new ExamImpl();
         exam.addQuestions(numericQuestionsList3);
         ForEachTestStub forEachTestStub = new ForEachTestStub();
-        exam.forEach(forEachTestStub::accept);
+        exam.forEach(forEachTestStub);
         assertEquals(3, forEachTestStub.getCnt());
     }
 

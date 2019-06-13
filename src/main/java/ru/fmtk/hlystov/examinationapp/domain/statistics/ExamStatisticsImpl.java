@@ -1,11 +1,8 @@
 package ru.fmtk.hlystov.examinationapp.domain.statistics;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
-import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
 @Service
 public class ExamStatisticsImpl implements ExamStatistics {
@@ -18,8 +15,7 @@ public class ExamStatisticsImpl implements ExamStatistics {
     }
 
     @Override
-    public void addResult(int number, @NotNull Question question, @Nullable Answer answer,
-                          @NotNull AnswerResult result) {
+    public void addResult(@NotNull AnswerResult result) {
         ++questionsNumber;
         if (result.isRight()) {
             ++rightQuestions;
