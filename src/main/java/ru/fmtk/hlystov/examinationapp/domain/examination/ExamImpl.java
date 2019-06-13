@@ -31,7 +31,7 @@ public class ExamImpl implements Exam {
 
     @Override
     public Optional<Question> getQuestion(int index) {
-        if (index < questionsNumber()) {
+        if (index >= 0 && index < questionsNumber()) {
             return Optional.of(questions.get(index));
         }
         return Optional.empty();
@@ -47,6 +47,7 @@ public class ExamImpl implements Exam {
         this.questions.addAll(questions);
     }
 
+    @Override
     public Iterator<Question> iterator() {
         return questions.iterator();
     }

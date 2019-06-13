@@ -29,8 +29,8 @@ public class ConsolePresenterTest {
         testConsole = new TestConsole();
         Application app = new Application();
         AppConfig appConfig = new AppConfig(new Locale("en", "En"),
-                "simple-exam-5-questions.csv",
                 app.messageSource());
+        appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
         user = new User("a", "b");
         UserAuthStub userAuth = new UserAuthStub(user);
         StringsToAnswerConverter answerConverter = new StringsToAnswerConverter();
