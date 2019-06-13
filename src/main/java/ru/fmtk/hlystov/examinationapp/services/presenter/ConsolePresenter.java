@@ -1,7 +1,6 @@
 package ru.fmtk.hlystov.examinationapp.services.presenter;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,7 @@ import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverte
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,44 +59,42 @@ public class ConsolePresenter implements Presenter {
     }
 
     @Override
-    @Nullable
-    public String readString() {
+    @NotNull
+    public Optional<String> readString() {
         try {
-            return sc.nextLine();
+            return Optional.ofNullable(sc.nextLine());
         } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public User getUser() {
+    @NotNull
+    public Optional<User> getUser() {
         return userAuthentification.getUser();
     }
 
     @Override
-    @Nullable
-    public Answer askQuestion(int number, @NotNull Question question) {
-        showMessage(getResString("presenter.long-ine"));
+    @NotNull
+    public Optional<? extends Answer> askQuestion(int number, @NotNull Question question) {
+        showMessage(getResString("presenter.long-line"));
         String questionPrompt = getResString("presenter.question-number");
         showMessage(String.format(questionPrompt, number));
         showMessage(question.getTitle());
         showOptions(question.getOptions());
         showMessage(getInputPrompt(question.getClass()));
-        String textAnswer = readString();
-        List<String> answers;
-        if (textAnswer != null) {
-            answers = Arrays.stream(textAnswer.split(" "))
-                    .filter(s -> !StringUtils.isEmpty(s))
-                    .collect(Collectors.toList());
-            return answerConverter.convertAnswer(question.getClass(), answers);
-        }
-        showMessage(getResString("presenter.long-ine"));
-        return null;
+        Optional<? extends Answer> result = readString().map(textAnswer -> textAnswer.split(" "))
+                .map(Arrays::stream)
+                .map(stringStream -> stringStream.filter(s -> !StringUtils.isEmpty(s))
+                        .collect(Collectors.toList()))
+                .flatMap(answers -> answerConverter.convertAnswer(question.getClass(), answers));
+        showMessage(getResString("presenter.long-line"));
+        return result;
     }
 
     @Override
     public void showStatistics(@NotNull ExamStatistics statistics) {
-        showMessage(getResString("presenter.long-ine"));
+        showMessage(getResString("presenter.long-line"));
         showMessage(getResString("presenter.statistics-start"));
         showMessage(String.format(getResString("presenter.statistics-aggregate"),
                 statistics.getQuestionsNumber(),
@@ -136,7 +130,7 @@ public class ConsolePresenter implements Presenter {
 
     @Override
     public void showExamResult(boolean success) {
-        showMessage(getResString("presenter.long-ine"));
+        showMessage(getResString("presenter.long-line"));
         showMessage(getResString(success ? "presenter.exam-success" : "presenter.exam-unsuccess"));
     }
 
@@ -159,8 +153,7 @@ public class ConsolePresenter implements Presenter {
     }
 
     @NotNull
-    String getResString(@NotNull String stringName) {
-        String message = appConfig.getMessage(stringName, null);
-        return message == null ? "" : message;
+    private String getResString(@NotNull String stringName) {
+        return appConfig.getMessage(stringName, null);
     }
 }

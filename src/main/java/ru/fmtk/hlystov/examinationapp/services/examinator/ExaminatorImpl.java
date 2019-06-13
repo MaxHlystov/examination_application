@@ -10,6 +10,7 @@ import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import java.util.AbstractMap;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class ExaminatorImpl implements Examinator {
@@ -30,15 +31,15 @@ public class ExaminatorImpl implements Examinator {
     @Override
     public void performExam() {
         presenter.showGreetengs();
-        User user = presenter.getUser();
+        Optional<User> optUser = presenter.getUser();
         presenter.showExamStart();
-        if (user != null) {
-            askQuestions();
-            presenter.showStatistics(statistics);
-            presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
-        } else {
-            presenter.showUserNeeded();
-        }
+        optUser.ifPresentOrElse(
+                user -> {
+                    askQuestions();
+                    presenter.showStatistics(statistics);
+                    presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
+                },
+                presenter::showUserNeeded);
         presenter.showGoodBy();
     }
 
@@ -62,7 +63,7 @@ public class ExaminatorImpl implements Examinator {
     }
 
     private void askQuestion(int index, @NotNull Question question) {
-        Answer answer = presenter.askQuestion(index + 1, question);
+        Answer answer = presenter.askQuestion(index + 1, question).orElse(null);
         AnswerResult result = question.checkAnswers(answer);
         presenter.showAnswerResult(result);
         statistics.addResult(index + 1, question, answer, result);

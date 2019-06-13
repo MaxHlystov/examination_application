@@ -11,6 +11,7 @@ import ru.fmtk.hlystov.examinationapp.Application;
 
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class AppConfig {
@@ -38,15 +39,15 @@ public class AppConfig {
         return String.format("%s_%s.%s", withoutExt, localeString, extension);
     }
 
-    @Nullable
-    public InputStream getSCVQuestionsStream() {
-        return getLocalResourceStream(baseCSVResourceName,
-                getCSVResourceName());
+    @NotNull
+    public Optional<InputStream> getSCVQuestionsStream() {
+        return getLocalResourceStream(baseCSVResourceName, getCSVResourceName());
     }
 
-    @Nullable
+    @NotNull
     public String getMessage(@NotNull String code, @Nullable String[] args) {
-        return messageSource.getMessage(code, args, locale);
+        var msg = messageSource.getMessage(code, args, locale);
+        return (msg == null) ? "" : msg;
     }
 
     @NotNull
@@ -58,13 +59,13 @@ public class AppConfig {
         this.locale = locale;
     }
 
-    @Nullable
-    public static InputStream getLocalResourceStream(@NotNull String baseResourceName,
-                                                     @NotNull String localResourceName) {
+    @NotNull
+    public static Optional<InputStream> getLocalResourceStream(@NotNull String baseResourceName,
+                                                               @NotNull String localResourceName) {
         InputStream in = Application.class.getResourceAsStream(localResourceName);
         if (in != null) {
-            return in;
+            return Optional.of(in);
         }
-        return Application.class.getResourceAsStream(baseResourceName);
+        return Optional.ofNullable(Application.class.getResourceAsStream(baseResourceName));
     }
 }

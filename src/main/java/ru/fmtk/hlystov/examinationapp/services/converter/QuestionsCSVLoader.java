@@ -3,7 +3,6 @@ package ru.fmtk.hlystov.examinationapp.services.converter;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
@@ -15,6 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,26 +27,21 @@ public class QuestionsCSVLoader {
     }
 
     @NotNull
-    public List<Question> readQuestions(@Nullable InputStream inputStream) throws IOException {
+    public List<Question> readQuestions(@NotNull InputStream inputStream) throws IOException {
         List<Question> questions = new ArrayList<>();
-        if (inputStream != null) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
-            String[] line;
-            while ((line = csvReader.readNext()) != null) {
-                Question question = parceLine(line);
-                if (question != null) {
-                    questions.add(question);
-                }
-            }
-            csvReader.close();
-            reader.close();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
+        String[] line;
+        while ((line = csvReader.readNext()) != null) {
+            parceLine(line).ifPresent(questions::add);
         }
+        csvReader.close();
+        reader.close();
         return questions;
     }
 
-    @Nullable
-    public Question parceLine(@NotNull String[] line) {
+    @NotNull
+    public Optional<? extends Question> parceLine(@NotNull String[] line) {
         String type = line[0];
         String title = line[1];
         List<String> options = getValuableSubarray(line, 2, 6);
@@ -54,7 +49,7 @@ public class QuestionsCSVLoader {
         if (!StringUtils.isEmpty(type) && !StringUtils.isEmpty(title) && answers.size() > 0) {
             return questionConverter.convertQuestion(type, title, options, answers);
         }
-        return null;
+        return Optional.empty();
     }
 
     @NotNull
