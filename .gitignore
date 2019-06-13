@@ -1,15 +1,44 @@
-# Intellij project files
+### IntelliJ IDEA ###
+*.iws
 *.iml
 *.ipr
-*.iws
+/out/
 .idea/
 
-#Gradle
+### Gradle ###
 .gradletasknamecache
-.gradle/
+.gradle
 build/
 bin/
-out/
+!gradle/wrapper/gradle-wrapper.jar
 
-#Another files
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/ 
+
+### Another files ###
 .log
+
+
+
+
+
+
+
+
+

@@ -2,8 +2,12 @@ package ru.fmtk.hlystov.examinationapp;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
@@ -20,14 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
-@Configuration
-@ComponentScan
-@PropertySource("/properties")
+@SpringBootApplication
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
-    @Nullable
-    private static volatile AnnotationConfigApplicationContext springContext;
+    private static ApplicationContext springContext;
     @Nullable
     private static AppConfig appConfig;
 
@@ -46,18 +47,19 @@ public class Application {
     }
 
     public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
         getAppConfig().getSCVQuestionsStream().flatMap(Application::getExamByQuestionsStream)
                 .ifPresent(exam -> {
-                    Presenter presenter = getSpringContext().getBean(ConsolePresenter.class);
-                    ExamStatisticsImpl statistics = getSpringContext().getBean(ExamStatisticsImpl.class);
+                    Presenter presenter = springContext.getBean(ConsolePresenter.class);
+                    ExamStatisticsImpl statistics = springContext.getBean(ExamStatisticsImpl.class);
                     Examinator examinator = new ExaminatorImpl(presenter, exam, statistics);
                     examinator.performExam();
                 });
     }
 
     private static Optional<Exam> getExamByQuestionsStream(@NotNull InputStream inputStream) {
-        ExamImpl exam = getSpringContext().getBean(ExamImpl.class);
-        QuestionsCSVLoader questionsCSVLoader = getSpringContext().getBean(QuestionsCSVLoader.class);
+        ExamImpl exam = springContext.getBean(ExamImpl.class);
+        QuestionsCSVLoader questionsCSVLoader = springContext.getBean(QuestionsCSVLoader.class);
         try {
             exam.addQuestions(questionsCSVLoader.readQuestions(inputStream));
         } catch (IOException e) {
@@ -69,20 +71,13 @@ public class Application {
     @NotNull
     public static AppConfig getAppConfig() {
         if (appConfig == null) {
-            appConfig = getSpringContext().getBean(AppConfig.class);
+            appConfig = springContext.getBean(AppConfig.class);
         }
         return appConfig;
     }
 
-    @NotNull
-    private static AnnotationConfigApplicationContext getSpringContext() {
-        if (springContext == null) {
-            synchronized (Application.class) {
-                if (springContext == null) {
-                    springContext = new AnnotationConfigApplicationContext(Application.class);
-                }
-            }
-        }
-        return springContext;
+    @Autowired
+    public void setSpringContext(ApplicationContext springContext) {
+        this.springContext = springContext;
     }
 }

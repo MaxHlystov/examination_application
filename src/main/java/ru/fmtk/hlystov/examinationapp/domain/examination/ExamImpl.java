@@ -1,7 +1,7 @@
 package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
@@ -9,14 +9,14 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Service
+@ConfigurationProperties("exam")
 public class ExamImpl implements Exam {
     @NotNull
     private final List<Question> questions;
-    private final int numberToSuccess;
+    private int rightAnswersToSuccess;
 
-    public ExamImpl(@Value("${right.answer.for.success}") int numberToSuccess) {
+    public ExamImpl() {
         this.questions = new ArrayList<>();
-        this.numberToSuccess = numberToSuccess;
     }
 
     @Override
@@ -63,6 +63,10 @@ public class ExamImpl implements Exam {
 
     @Override
     public int getNumberToSuccess() {
-        return numberToSuccess;
+        return rightAnswersToSuccess;
+    }
+
+    public void setRightAnswersToSuccess(int rightAnswersToSuccess) {
+        this.rightAnswersToSuccess = rightAnswersToSuccess;
     }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.Application;
@@ -14,9 +15,10 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
+@ConfigurationProperties("app-config")
 public class AppConfig {
     @NotNull
-    private final String baseCSVResourceName;
+    private String baseCSVResourceName;
     @NotNull
     private Locale locale;
     @NotNull
@@ -24,10 +26,8 @@ public class AppConfig {
 
     public AppConfig(@Value("#{ systemProperties['user.language'] + '_' + systemProperties['user.country'] }")
                      @NotNull Locale locale,
-                     @Value("${csv.path}") @NotNull String baseCSVResourceName,
                      @NotNull MessageSource messageSource) {
         this.locale = locale;
-        this.baseCSVResourceName = baseCSVResourceName;
         this.messageSource = messageSource;
     }
 
@@ -67,5 +67,9 @@ public class AppConfig {
             return Optional.of(in);
         }
         return Optional.ofNullable(Application.class.getResourceAsStream(baseResourceName));
+    }
+
+    public void setBaseCSVResourceName(String baseCSVResourceName) {
+        this.baseCSVResourceName = baseCSVResourceName;
     }
 }
