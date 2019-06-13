@@ -2,20 +2,22 @@ package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
+@Service
 public class ExamImpl implements Exam {
     @NotNull
     private final List<Question> questions;
+    private final int numberToSuccess;
 
-    public ExamImpl() {
-        questions = new ArrayList<>();
+    public ExamImpl(@Value("${right.answer.for.success}") int numberToSuccess) {
+        this.questions = new ArrayList<>();
+        this.numberToSuccess = numberToSuccess;
     }
 
     @Override
@@ -29,17 +31,21 @@ public class ExamImpl implements Exam {
     }
 
     @Override
-    @Nullable
-    public Question getQuestion(int index) {
+    public Optional<Question> getQuestion(int index) {
         if (index < questionsNumber()) {
-            return questions.get(index);
+            return Optional.of(questions.get(index));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public void addQuestion(@NotNull Question question) {
         questions.add(question);
+    }
+
+    @Override
+    public void addQuestions(@NotNull List<Question> questions) {
+        this.questions.addAll(questions);
     }
 
     @NotNull
@@ -55,5 +61,10 @@ public class ExamImpl implements Exam {
     @Override
     public Spliterator<Question> spliterator() {
         return questions.spliterator();
+    }
+
+    @Override
+    public int getNumberToSuccess() {
+        return numberToSuccess;
     }
 }

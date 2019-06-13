@@ -9,13 +9,16 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
+import java.util.AbstractMap;
+import java.util.stream.IntStream;
+
 public class ExaminatorImpl implements Examinator {
     @NotNull
     private final Presenter presenter;
     @NotNull
     private final Exam exam;
     @NotNull
-    private ExamStatistics statistics;
+    private final ExamStatistics statistics;
 
     public ExaminatorImpl(@NotNull Presenter presenter, @NotNull Exam exam,
                           @NotNull ExamStatistics statistics) {
@@ -30,17 +33,9 @@ public class ExaminatorImpl implements Examinator {
         User user = presenter.getUser();
         presenter.showExamStart();
         if (user != null) {
-            for (int index = 0; index < exam.questionsNumber(); ++index) {
-                Question question = exam.getQuestion(index);
-                if (question != null) {
-                    Answer answer = presenter.askQuestion(index + 1, question);
-                    AnswerResult result = question.checkAnswers(answer);
-                    presenter.showAnswerResult(result);
-                    statistics.addResult(index + 1, question, answer, result);
-                }
-
-            }
+            askQuestions();
             presenter.showStatistics(statistics);
+            presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
         } else {
             presenter.showUserNeeded();
         }
@@ -59,5 +54,17 @@ public class ExaminatorImpl implements Examinator {
         return presenter;
     }
 
+    private void askQuestions() {
+        IntStream.range(0, exam.questionsNumber())
+                .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, exam.getQuestion(index)))
+                .filter(pair -> pair.getValue().isPresent())
+                .forEachOrdered(pair -> askQuestion(pair.getKey(), pair.getValue().get()));
+    }
 
+    private void askQuestion(int index, @NotNull Question question) {
+        Answer answer = presenter.askQuestion(index + 1, question);
+        AnswerResult result = question.checkAnswers(answer);
+        presenter.showAnswerResult(result);
+        statistics.addResult(index + 1, question, answer, result);
+    }
 }

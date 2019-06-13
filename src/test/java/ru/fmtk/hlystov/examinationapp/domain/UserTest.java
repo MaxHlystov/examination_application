@@ -8,11 +8,11 @@ import static org.junit.Assert.assertEquals;
 
 public class UserTest {
     @Nullable
-    private UserImpl userAB;
+    private User userAB;
 
     @Before
     public void initUserTest() {
-        userAB = new UserImpl("a", "b");
+        userAB = new User("a", "b");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class UserTest {
 
     @Test
     public void equalsTest() {
-        assertEquals(userAB, new UserImpl("a", "b"));
+        assertEquals(userAB, new User("a", "b"));
     }
 
 }

@@ -2,6 +2,7 @@ package ru.fmtk.hlystov.examinationapp.services.converter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class StringsToQuestionsConverter {
     @NotNull
     private final Map<String, Class<? extends Question>> classByName;
