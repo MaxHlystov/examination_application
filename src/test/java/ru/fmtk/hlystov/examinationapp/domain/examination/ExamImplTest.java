@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +33,6 @@ public class ExamImplTest {
     @Test
     public void questionsNumber() {
         ExamImpl exam = new ExamImpl();
-        assertEquals(0, exam.questionsNumber());
         exam.addQuestions(numericQuestionsList3);
         assertEquals(3, exam.questionsNumber());
     }
@@ -41,7 +41,6 @@ public class ExamImplTest {
     public void clear() {
         ExamImpl exam = new ExamImpl();
         exam.addQuestions(numericQuestionsList3);
-        assertEquals(3, exam.questionsNumber());
         exam.clear();
         assertEquals(0, exam.questionsNumber());
     }
@@ -84,51 +83,14 @@ public class ExamImplTest {
     }
 
     @Test
-    public void iterator() {
-        ExamImpl exam = new ExamImpl();
-        Iterator<Question> it = exam.iterator();
-        assertNotNull(it);
-        assertFalse(it.hasNext());
-        exam.addQuestions(numericQuestionsList3);
-        it = exam.iterator();
-        assertNotNull(it);
-        assertTrue(it.hasNext());
-        Question question = it.next();
-        assertNotNull(question);
-    }
-
-    @Test
-    public void forEach() {
+    public void stream() {
         ExamImpl exam = new ExamImpl();
         exam.addQuestions(numericQuestionsList3);
-        ForEachTestStub forEachTestStub = new ForEachTestStub();
-        exam.forEach(forEachTestStub);
-        assertEquals(3, forEachTestStub.getCnt());
-    }
-
-    private static class ForEachTestStub implements Consumer<Question> {
-        private int cnt;
-
-        public ForEachTestStub() {
-            cnt = 0;
-        }
-
-        @Override
-        public void accept(Question question) {
-            cnt++;
-        }
-
-        public int getCnt() {
-            return cnt;
-        }
-    }
-
-    @Test
-    public void spliterator() {
-        ExamImpl exam = new ExamImpl();
-        exam.addQuestions(numericQuestionsList3);
-        Spliterator<Question> spliterator = exam.spliterator();
-        assertNotNull(spliterator);
+        Stream<Question> stream = exam.stream();
+        assertNotNull(stream);
+        long inSize = numericQuestionsList3.size();
+        long cnt = stream.count();
+        assertEquals(inSize, cnt);
     }
 
     @Test
