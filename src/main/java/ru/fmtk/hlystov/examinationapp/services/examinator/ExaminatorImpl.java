@@ -19,19 +19,28 @@ import java.util.stream.IntStream;
 @Profile("console")
 @Component
 public class ExaminatorImpl implements Examinator {
-    @NotNull
-    private final Presenter presenter;
-    @NotNull
-    private final Exam exam;
-    @NotNull
-    private final ExamStatistics statistics;
+    private Presenter presenter;
+    private Exam exam;
+    private ExamStatistics statistics;
 
     @Autowired
-    public ExaminatorImpl(@NotNull Presenter presenter, @NotNull Exam exam,
-                          @NotNull ExamStatistics statistics) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-        this.exam = exam;
+    }
+
+    @Autowired
+    public void setStatistics(ExamStatistics statistics) {
         this.statistics = statistics;
+    }
+
+    @Autowired
+    public void setExam(Exam exam) {
+        this.exam = exam;
+    }
+
+    @Override
+    public Exam getExam() {
+        return exam;
     }
 
     @Override

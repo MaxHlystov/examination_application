@@ -28,9 +28,6 @@ import java.util.Optional;
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
-    private static ApplicationContext springContext;
-    @Nullable
-    private static AppConfig appConfig;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer getPropertyConfig() {
@@ -48,37 +45,5 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-
-        getAppConfig().getSCVQuestionsStream().flatMap(Application::getExamByQuestionsStream)
-                .ifPresent(exam -> {
-                    Presenter presenter = springContext.getBean(ConsolePresenter.class);
-                    ExamStatisticsImpl statistics = springContext.getBean(ExamStatisticsImpl.class);
-                    Examinator examinator = new ExaminatorImpl(presenter, exam, statistics);
-                    examinator.performExam();
-                });
-    }
-
-    private static Optional<Exam> getExamByQuestionsStream(@NotNull InputStream inputStream) {
-        ExamImpl exam = springContext.getBean(ExamImpl.class);
-        QuestionsCSVLoader questionsCSVLoader = springContext.getBean(QuestionsCSVLoader.class);
-        try {
-            exam.addQuestions(questionsCSVLoader.readQuestions(inputStream));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.of(exam);
-    }
-
-    @NotNull
-    public static AppConfig getAppConfig() {
-        if (appConfig == null) {
-            appConfig = springContext.getBean(AppConfig.class);
-        }
-        return appConfig;
-    }
-
-    @Autowired
-    public void setSpringContext(ApplicationContext springContext) {
-        this.springContext = springContext;
     }
 }

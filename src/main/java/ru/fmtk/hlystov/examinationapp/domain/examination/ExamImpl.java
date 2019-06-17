@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
-@ConfigurationProperties("exam")
 public class ExamImpl implements Exam {
     @NotNull
     private final List<Question> questions;
