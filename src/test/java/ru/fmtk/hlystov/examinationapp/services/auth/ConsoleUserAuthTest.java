@@ -13,7 +13,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Scanner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ConsoleUserAuthTest {
     private TestConsole testConsole;
@@ -28,7 +29,8 @@ public class ConsoleUserAuthTest {
 
     private void setAppConfig(@NotNull Locale locale) {
         Application app = new Application();
-        appConfig = new AppConfig(locale, "simple-exam-5-questions.csv", app.messageSource());
+        appConfig = new AppConfig(locale, app.messageSource());
+        appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
         userAuth = new ConsoleUserAuth(appConfig,
                 testConsole.getInputStream(), testConsole.getPrintStream());
     }

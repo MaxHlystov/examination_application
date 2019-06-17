@@ -43,7 +43,7 @@ public class ConsoleUserAuth implements UserAuthentification {
             out.println(appConfig.getMessage("authentification.whats-second-name", null));
             String secondName = sc.nextLine();
             user = new User(firstName, secondName);
-        } catch (NoSuchElementException | IllegalStateException ignoredToNull) {
+        } catch (NoSuchElementException | IllegalStateException ignored) {
         }
         return Optional.ofNullable(user);
     }

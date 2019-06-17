@@ -5,8 +5,9 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-public interface Exam extends Iterable<Question> {
+public interface Exam {
     int questionsNumber();
 
     void clear();
@@ -18,4 +19,6 @@ public interface Exam extends Iterable<Question> {
     void addQuestions(@NotNull List<Question> questions);
 
     int getNumberToSuccess();
+
+    Stream<Question> stream();
 }

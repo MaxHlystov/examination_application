@@ -14,6 +14,7 @@ public class AnswerResultImpl implements AnswerResult {
         this.right = right;
     }
 
+    @NotNull
     @Override
     public String getDescription() { return description; }
 

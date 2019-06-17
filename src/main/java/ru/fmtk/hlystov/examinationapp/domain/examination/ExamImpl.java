@@ -1,22 +1,24 @@
 package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
+@ConfigurationProperties("exam")
 public class ExamImpl implements Exam {
     @NotNull
     private final List<Question> questions;
-    private final int numberToSuccess;
+    private int rightAnswersToSuccess;
 
-    public ExamImpl(@Value("${right.answer.for.success}") int numberToSuccess) {
+    public ExamImpl() {
         this.questions = new ArrayList<>();
-        this.numberToSuccess = numberToSuccess;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class ExamImpl implements Exam {
 
     @Override
     public Optional<Question> getQuestion(int index) {
-        if (index < questionsNumber()) {
+        if (index >= 0 && index < questionsNumber()) {
             return Optional.of(questions.get(index));
         }
         return Optional.empty();
@@ -47,22 +49,17 @@ public class ExamImpl implements Exam {
         this.questions.addAll(questions);
     }
 
-    public Iterator<Question> iterator() {
-        return questions.iterator();
-    }
-
     @Override
-    public void forEach(Consumer<? super Question> action) {
-        questions.forEach(action);
-    }
-
-    @Override
-    public Spliterator<Question> spliterator() {
-        return questions.spliterator();
+    public Stream<Question> stream() {
+        return questions.stream();
     }
 
     @Override
     public int getNumberToSuccess() {
-        return numberToSuccess;
+        return rightAnswersToSuccess;
+    }
+
+    public void setRightAnswersToSuccess(int rightAnswersToSuccess) {
+        this.rightAnswersToSuccess = rightAnswersToSuccess;
     }
 }
