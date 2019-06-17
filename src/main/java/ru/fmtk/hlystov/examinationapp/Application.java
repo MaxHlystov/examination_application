@@ -48,6 +48,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+
         getAppConfig().getSCVQuestionsStream().flatMap(Application::getExamByQuestionsStream)
                 .ifPresent(exam -> {
                     Presenter presenter = springContext.getBean(ConsolePresenter.class);

@@ -1,6 +1,9 @@
 package ru.fmtk.hlystov.examinationapp.services.examinator;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
@@ -13,6 +16,8 @@ import java.util.AbstractMap;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+@Profile("console")
+@Component
 public class ExaminatorImpl implements Examinator {
     @NotNull
     private final Presenter presenter;
@@ -21,6 +26,7 @@ public class ExaminatorImpl implements Examinator {
     @NotNull
     private final ExamStatistics statistics;
 
+    @Autowired
     public ExaminatorImpl(@NotNull Presenter presenter, @NotNull Exam exam,
                           @NotNull ExamStatistics statistics) {
         this.presenter = presenter;
