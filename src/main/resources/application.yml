@@ -1,3 +1,6 @@
+spring:
+  profiles:
+    active: console
 application:
   version: 0.0.1
 app-config:
@@ -6,3 +9,11 @@ app-config:
 shell:
   interactive:
     enabled: false
+
+---
+spring:
+  profiles: shell
+
+  shell:
+    interactive:
+      enabled: true

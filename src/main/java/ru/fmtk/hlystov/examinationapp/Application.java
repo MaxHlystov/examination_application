@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
+import ru.fmtk.hlystov.examinationapp.domain.examination.ExamFactory;
 import ru.fmtk.hlystov.examinationapp.domain.examination.ExamImpl;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatisticsImpl;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
@@ -28,6 +29,12 @@ import java.util.Optional;
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
+    private static ApplicationContext springContext;
+
+    @Autowired
+    public void setSpringContext(ApplicationContext springContext) {
+        this.springContext = springContext;
+    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer getPropertyConfig() {
@@ -41,6 +48,12 @@ public class Application {
         ms.setBasename(STRINGS_RESOURCE_BUNDLE_NAME);
         ms.setDefaultEncoding("UTF-8");
         return ms;
+    }
+
+    @Bean(name = "Exam")
+    public Exam createExam() {
+        ExamFactory factory = Application.springContext.getBean(ExamFactory.class);
+        return factory.createExam();
     }
 
     public static void main(String[] args) {

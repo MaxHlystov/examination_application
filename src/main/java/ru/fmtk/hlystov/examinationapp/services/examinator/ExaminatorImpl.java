@@ -39,11 +39,6 @@ public class ExaminatorImpl implements Examinator {
     }
 
     @Override
-    public Exam getExam() {
-        return exam;
-    }
-
-    @Override
     public void performExam() {
         presenter.showGreetengs();
         Optional<User> optUser = presenter.getUser();
