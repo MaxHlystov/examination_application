@@ -24,6 +24,7 @@ public class ExamImpl implements Exam {
         return questions.size();
     }
 
+
     @Override
     public void clear() {
         questions.clear();

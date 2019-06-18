@@ -11,12 +11,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class UserAuthentification {
+public class UserAuthentication {
     @NotNull
     private final AppConfig appConfig;
 
     @Autowired
-    public UserAuthentification(@Qualifier("appConfig") @NotNull AppConfig appConfig) {
+    public UserAuthentication(@Qualifier("appConfig") @NotNull AppConfig appConfig) {
         this.appConfig = appConfig;
     }
 

@@ -26,16 +26,11 @@ public class ConsolePresenter implements Presenter {
     @NotNull
     private final StringsToAnswerConverter answerConverter;
     @NotNull
-    private final Scanner sc;
+    private Scanner sc;
     @NotNull
-    private final PrintStream out;
+    private PrintStream out;
 
     @Autowired
-    public ConsolePresenter(@NotNull AppConfig appConfig,
-                            @NotNull StringsToAnswerConverter answerConverter) {
-        this(appConfig, answerConverter, System.in, System.out);
-    }
-
     public ConsolePresenter(@NotNull AppConfig appConfig,
                             @NotNull StringsToAnswerConverter answerConverter,
                             @NotNull InputStream in,
@@ -78,13 +73,18 @@ public class ConsolePresenter implements Presenter {
 
     @Override
     @NotNull
-    public Optional<? extends Answer> askQuestion(int number, @NotNull Question question) {
+    public void showQuestion(int number, @NotNull Question question) {
         showMessage(getResString("presenter.long-line"));
         String questionPrompt = getResString("presenter.question-number");
         showMessage(String.format(questionPrompt, number));
         showMessage(question.getTitle());
         showOptions(question.getOptions());
         showMessage(getInputPrompt(question.getClass()));
+    }
+
+    @Override
+    @NotNull
+    public Optional<? extends Answer> readAnswer(@NotNull Question question) {
         Optional<? extends Answer> result = readString().map(textAnswer -> textAnswer.split(" "))
                 .map(Arrays::stream)
                 .map(stringStream -> stringStream.filter(s -> !StringUtils.isEmpty(s))
@@ -152,6 +152,19 @@ public class ConsolePresenter implements Presenter {
             showMessage(String.format("  %d. %s", i + 1, options.get(i)));
         }
 
+    }
+
+    @NotNull
+    public PrintStream getPrintStream() {
+        return out;
+    }
+
+    public void setPrintStream(@NotNull PrintStream printStream) {
+        this.out = printStream;
+    }
+
+    public void setInputStream(@NotNull InputStream inputStream) {
+        this.sc = new Scanner(inputStream);
     }
 
     @NotNull

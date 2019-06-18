@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: Shell
+    active: ShellConsole
 application:
   version: 0.0.1
 app-config:
@@ -16,7 +16,7 @@ spring:
 
 ---
 spring:
-  profiles: Shell
+  profiles: ShellConsole
   shell:
     interactive:
       enabled: true

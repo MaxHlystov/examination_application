@@ -4,14 +4,19 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.fmtk.hlystov.examinationapp.domain.examination.Exam;
 import ru.fmtk.hlystov.examinationapp.domain.examination.ExamFactory;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
+
+import java.io.InputStream;
+import java.io.PrintStream;
 
 @SpringBootApplication
 public class Application {
@@ -46,6 +51,17 @@ public class Application {
         ExamFactory factory = Application.springContext.getBean(ExamFactory.class);
         return factory.createExam();
     }
+
+    @Bean
+    public InputStream getConsoleInputStream() {
+        return System.in;
+    }
+
+    @Bean
+    public PrintStream getConsoleOutStream() {
+        return System.out;
+    }
+
 
     public static AppConfig getAppConfig() {
         return appConfig;

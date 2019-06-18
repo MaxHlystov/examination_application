@@ -25,7 +25,9 @@ public interface Presenter {
     void showExamStart();
 
     @NotNull
-    Optional<? extends Answer> askQuestion(int number, Question question);
+    void showQuestion(int number, Question question);
+
+    Optional<? extends Answer> readAnswer(@NotNull Question question);
 
     void showStatistics(@NotNull ExamStatistics statistics);
 

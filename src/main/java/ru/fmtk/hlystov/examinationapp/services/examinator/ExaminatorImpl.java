@@ -12,7 +12,7 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
-import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentication;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import java.util.AbstractMap;
@@ -25,11 +25,11 @@ public class ExaminatorImpl implements Examinator, ApplicationRunner {
     private Presenter presenter;
     private Exam exam;
     private ExamStatistics statistics;
-    private UserAuthentification userAuthentification;
+    private UserAuthentication userAuthentication;
 
     @Autowired
-    public void setUserAuthentification(UserAuthentification userAuthentification) {
-        this.userAuthentification = userAuthentification;
+    public void setUserAuthentication(UserAuthentication userAuthentication) {
+        this.userAuthentication = userAuthentication;
     }
 
     @Autowired
@@ -48,22 +48,22 @@ public class ExaminatorImpl implements Examinator, ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         performExam();
     }
 
     @Override
     public void performExam() {
         presenter.showGreetengs();
-        Optional<User> optUser = presenter.getUserCredential().flatMap(userAuthentification::getUser);
-        presenter.showExamStart();
-        optUser.ifPresentOrElse(
-                user -> {
-                    askQuestions();
-                    presenter.showStatistics(statistics);
-                    presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
-                },
-                presenter::showUserNeeded);
+        Optional<User> optUser = presenter.getUserCredential().flatMap(userAuthentication::getUser);
+        if (optUser.isPresent()) {
+            presenter.showExamStart();
+            askQuestions();
+            presenter.showStatistics(statistics);
+            presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
+        } else {
+            presenter.showUserNeeded();
+        }
         presenter.showGoodBy();
     }
 
@@ -87,9 +87,10 @@ public class ExaminatorImpl implements Examinator, ApplicationRunner {
     }
 
     private void askQuestion(int index, @NotNull Question question) {
-        Answer answer = presenter.askQuestion(index + 1, question).orElse(null);
+        presenter.showQuestion(index + 1, question);
+        Answer answer = presenter.readAnswer(question).orElse(null);
         AnswerResult result = question.checkAnswers(answer);
         presenter.showAnswerResult(result);
-        statistics.addResult(result);
+        statistics.addResult(question, result);
     }
 }

@@ -4,7 +4,6 @@ package ru.fmtk.hlystov.examinationapp.services;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
@@ -73,6 +72,10 @@ public class AppConfig {
 
     public void setBaseCSVResourceName(@NotNull String baseCSVResourceName) {
         this.baseCSVResourceName = baseCSVResourceName;
+    }
+
+    public int getRightAnswersToSuccess() {
+        return rightAnswersToSuccess;
     }
 
     public void setRightAnswersToSuccess(int rightAnswersToSuccess) {

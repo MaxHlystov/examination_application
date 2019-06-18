@@ -11,8 +11,8 @@ public class User {
 
 
     public User(@NotNull UserCredential userCredential) {
-        this.firstName = userCredential.getFirstName();
-        this.secondName = userCredential.getSecondName();
+        this.firstName = (userCredential.getFirstName() == null) ? "" : userCredential.getFirstName();
+        this.secondName = (userCredential.getSecondName() == null) ? "" : userCredential.getSecondName();
     }
 
     @NotNull
