@@ -1,19 +1,22 @@
 spring:
   profiles:
-    active: console
+    active: Shell
 application:
   version: 0.0.1
 app-config:
   base-csv-resource-name: "/simple-exam-5-questions.csv"
   right-answers-to-success: 4
-shell:
-  interactive:
-    enabled: false
 
 ---
 spring:
-  profiles: shell
+  profiles: PureConsole
+  shell:
+    interactive:
+      enabled: false
 
+---
+spring:
+  profiles: Shell
   shell:
     interactive:
       enabled: true

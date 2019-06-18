@@ -23,14 +23,10 @@ public abstract class BaseQuestion implements Question {
     public BaseQuestion(@NotNull String title,
                         @NotNull List<String> options,
                         @NotNull Answer rightAnswer) {
+        this.appConfig = Application.getAppConfig();
         this.title = title;
         this.options = options;
         this.rightAnswer = rightAnswer;
-    }
-
-    @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
     }
 
     @Override
