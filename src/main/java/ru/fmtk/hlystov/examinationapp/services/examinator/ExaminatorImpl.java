@@ -12,6 +12,7 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import java.util.AbstractMap;
@@ -20,10 +21,16 @@ import java.util.stream.IntStream;
 
 @Component("Examinator")
 @Profile("PureConsole")
-public class ExaminatorImpl  implements Examinator, ApplicationRunner {
+public class ExaminatorImpl implements Examinator, ApplicationRunner {
     private Presenter presenter;
     private Exam exam;
     private ExamStatistics statistics;
+    private UserAuthentification userAuthentification;
+
+    @Autowired
+    public void setUserAuthentification(UserAuthentification userAuthentification) {
+        this.userAuthentification = userAuthentification;
+    }
 
     @Autowired
     public void setPresenter(Presenter presenter) {
@@ -48,7 +55,7 @@ public class ExaminatorImpl  implements Examinator, ApplicationRunner {
     @Override
     public void performExam() {
         presenter.showGreetengs();
-        Optional<User> optUser = presenter.getUser();
+        Optional<User> optUser = presenter.getUserCredential().flatMap(userAuthentification::getUser);
         presenter.showExamStart();
         optUser.ifPresentOrElse(
                 user -> {

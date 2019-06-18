@@ -2,10 +2,8 @@ package ru.fmtk.hlystov.examinationapp.services.presenter;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
@@ -13,7 +11,7 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.question.OptionsQuestio
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.domain.statistics.ExamStatistics;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
-import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserCredential;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
 import java.io.InputStream;
@@ -26,8 +24,6 @@ public class ConsolePresenter implements Presenter {
     @NotNull
     private final AppConfig appConfig;
     @NotNull
-    private final UserAuthentification userAuthentification;
-    @NotNull
     private final StringsToAnswerConverter answerConverter;
     @NotNull
     private final Scanner sc;
@@ -36,18 +32,15 @@ public class ConsolePresenter implements Presenter {
 
     @Autowired
     public ConsolePresenter(@NotNull AppConfig appConfig,
-                            @Qualifier("consoleUserAuth") @NotNull UserAuthentification userAuthentification,
                             @NotNull StringsToAnswerConverter answerConverter) {
-        this(appConfig, userAuthentification, answerConverter, System.in, System.out);
+        this(appConfig, answerConverter, System.in, System.out);
     }
 
     public ConsolePresenter(@NotNull AppConfig appConfig,
-                            @NotNull UserAuthentification userAuthentification,
                             @NotNull StringsToAnswerConverter answerConverter,
                             @NotNull InputStream in,
                             @NotNull PrintStream out) {
         this.appConfig = appConfig;
-        this.userAuthentification = userAuthentification;
         this.answerConverter = answerConverter;
         this.sc = new Scanner(in);
         this.out = out;
@@ -70,8 +63,17 @@ public class ConsolePresenter implements Presenter {
 
     @Override
     @NotNull
-    public Optional<User> getUser() {
-        return userAuthentification.getUser();
+    public Optional<UserCredential> getUserCredential() {
+        UserCredential userCredential = null;
+        try {
+            out.println(appConfig.getMessage("authentification.whats-first-name", null));
+            String firstName = sc.nextLine();
+            out.println(appConfig.getMessage("authentification.whats-second-name", null));
+            String secondName = sc.nextLine();
+            userCredential = new UserCredential(firstName, secondName);
+        } catch (NoSuchElementException | IllegalStateException ignored) {
+        }
+        return Optional.ofNullable(userCredential);
     }
 
     @Override

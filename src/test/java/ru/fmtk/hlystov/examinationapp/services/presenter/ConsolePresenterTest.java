@@ -11,7 +11,6 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.answer.NumericAnswer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
-import ru.fmtk.hlystov.examinationapp.services.auth.UserAuthentification;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
 import java.io.IOException;
