@@ -72,7 +72,6 @@ public class ConsolePresenter implements Presenter {
     }
 
     @Override
-    @NotNull
     public void showQuestion(int number, @NotNull Question question) {
         showMessage(getResString("presenter.long-line"));
         String questionPrompt = getResString("presenter.question-number");
@@ -133,7 +132,7 @@ public class ConsolePresenter implements Presenter {
     @Override
     public void showExamResult(boolean success) {
         showMessage(getResString("presenter.long-line"));
-        showMessage(getResString(success ? "presenter.exam-success" : "presenter.exam-unsuccess"));
+        showMessage(getResString(success ? "presenter.exam-success" : "presenter.exam-unsuccessful"));
     }
 
     @NotNull

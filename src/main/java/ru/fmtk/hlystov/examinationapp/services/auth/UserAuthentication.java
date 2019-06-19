@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

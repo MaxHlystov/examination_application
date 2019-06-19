@@ -2,7 +2,6 @@ package ru.fmtk.hlystov.examinationapp.domain.examination.question;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
@@ -12,7 +11,7 @@ import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 import java.util.List;
 
 public abstract class BaseQuestion implements Question {
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
     @NotNull
     private final String title;
     @NotNull

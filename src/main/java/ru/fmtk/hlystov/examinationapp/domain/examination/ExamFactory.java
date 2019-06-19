@@ -2,7 +2,6 @@ package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 import ru.fmtk.hlystov.examinationapp.services.converter.QuestionsCSVLoader;

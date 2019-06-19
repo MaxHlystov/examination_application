@@ -16,10 +16,7 @@ import ru.fmtk.hlystov.examinationapp.services.auth.UserCredential;
 import ru.fmtk.hlystov.examinationapp.services.presenter.Presenter;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 @ShellComponent("Examinator")
 @Profile("ShellConsole")

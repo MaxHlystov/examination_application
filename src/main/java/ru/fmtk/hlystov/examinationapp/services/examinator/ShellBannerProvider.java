@@ -18,7 +18,7 @@ public class ShellBannerProvider extends DefaultBannerProvider {
     }
 
     public String getBanner() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append("=======================================").append(OsUtils.LINE_SEPARATOR);
         buf.append("*            Examination              *").append(OsUtils.LINE_SEPARATOR);
         buf.append("=======================================").append(OsUtils.LINE_SEPARATOR);

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class ExamStatisticsImpl implements ExamStatistics {
-    private Map<Question, AnswerResult> answeredQuestions;
+    private final Map<Question, AnswerResult> answeredQuestions;
     private int questionsNumber;
     private int rightQuestions;
 

@@ -3,13 +3,10 @@ package ru.fmtk.hlystov.examinationapp.services.auth;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.fmtk.hlystov.examinationapp.Application;
-import ru.fmtk.hlystov.examinationapp.TestConsole;
 import ru.fmtk.hlystov.examinationapp.domain.User;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 
