@@ -1,8 +1,9 @@
 package ru.fmtk.hlystov.examinationapp.services.presenter;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestComponent;
 import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.TestConsole;
 import ru.fmtk.hlystov.examinationapp.domain.User;
@@ -11,6 +12,7 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.answer.NumericAnswer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 import ru.fmtk.hlystov.examinationapp.services.AppConfig;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserCredential;
 import ru.fmtk.hlystov.examinationapp.services.converter.StringsToAnswerConverter;
 
 import java.io.IOException;
@@ -18,10 +20,17 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+@TestComponent
 public class ConsolePresenterTest {
     private TestConsole testConsole;
+    private UserCredential userCredential;
     private User user;
     private ConsolePresenter consolePresenter;
+
+    @Autowired
+    public void setTestConsole(TestConsole testConsole) {
+        this.testConsole = testConsole;
+    }
 
     @Before
     public void initTest() throws IOException {
@@ -30,10 +39,10 @@ public class ConsolePresenterTest {
         AppConfig appConfig = new AppConfig(new Locale("en", "En"),
                 app.messageSource());
         appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
-        user = new User("a", "b");
-        UserAuthStub userAuth = new UserAuthStub(user);
+        userCredential = new UserCredential("a", "b");
+        user = new User(userCredential);
         StringsToAnswerConverter answerConverter = new StringsToAnswerConverter();
-        consolePresenter = new ConsolePresenter(appConfig, userAuth, answerConverter,
+        consolePresenter = new ConsolePresenter(appConfig, answerConverter,
                 testConsole.getInputStream(), testConsole.getPrintStream());
     }
 
@@ -55,9 +64,13 @@ public class ConsolePresenterTest {
     }
 
     @Test
-    public void getUserNotEmpty() {
-        Optional<User> gotUser = consolePresenter.getUser();
-        assertTrue(gotUser.isPresent());
+    public void getUserCredentialNotEmpty() throws IOException {
+        String firstName = "First Name 1234";
+        String secondName = "Second name %$#";
+        testConsole.printlnToStdin(firstName);
+        testConsole.printlnToStdin(secondName);
+        Optional<UserCredential> gotUserCredential = consolePresenter.getUserCredential();
+        assertTrue(gotUserCredential.isPresent());
     }
 
     @Test
@@ -66,12 +79,10 @@ public class ConsolePresenterTest {
         String title = "Numeric title 1";
         List<String> options = new ArrayList<>();
         NumericAnswer rightAnswer = new NumericAnswer(rightNumber);
-        int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
         testConsole.printlnToStdin(Double.toString(rightNumber));
-        Optional<? extends Answer> newAnswer = consolePresenter.askQuestion(number, question);
-        assertTrue(newAnswer.isPresent());
-        assertTrue(rightAnswer.isEquals(newAnswer.get()));
+        Optional<? extends Answer> newAnswer = consolePresenter.readAnswer(question);
+        assertTrue(rightAnswer.isEquals(newAnswer.orElse(null)));
     }
 
     @Test
@@ -83,24 +94,8 @@ public class ConsolePresenterTest {
         int number = 0;
         Question question = new NumericQuestion(title, options, rightAnswer);
         testConsole.printlnToStdin(Double.toString(rightNumber + 100.0));
-        Optional<? extends Answer> newAnswer = consolePresenter.askQuestion(number, question);
+        Optional<? extends Answer> newAnswer = consolePresenter.readAnswer(question);
         assertTrue(newAnswer.isPresent());
         assertFalse(rightAnswer.isEquals(newAnswer.get()));
-    }
-
-    public class UserAuthStub implements UserAuthentification {
-        @NotNull
-        final
-        User user;
-
-        public UserAuthStub(@NotNull User user) {
-            this.user = user;
-        }
-
-        @Override
-        @NotNull
-        public Optional<User> getUser() {
-            return Optional.of(user);
-        }
     }
 }

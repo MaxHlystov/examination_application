@@ -1,6 +1,7 @@
 package ru.fmtk.hlystov.examinationapp.services.auth;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserAuthentication {
     }
 
     @NotNull
-    public Optional<User> getUser(UserCredential userCredential) {
+    public Optional<User> getUser(@Nullable UserCredential userCredential) {
         return Optional.ofNullable((userCredential != null) ? new User(userCredential) : null);
     }
 }
