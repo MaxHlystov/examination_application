@@ -36,4 +36,7 @@ public interface Presenter {
     void showAnswerResult(@NotNull AnswerResult result);
 
     void showExamResult(boolean success);
+
+    @NotNull
+    String getResString(@NotNull String stringName);
 }

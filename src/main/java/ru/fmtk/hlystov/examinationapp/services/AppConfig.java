@@ -22,6 +22,8 @@ public class AppConfig {
     @NotNull
     private Locale locale;
     @NotNull
+    private String version;
+    @NotNull
     private final MessageSource messageSource;
     private int rightAnswersToSuccess;
 

@@ -107,7 +107,7 @@ public class SellExaminator implements Examinator {
                         statistics.addResult(question, result);
                         return null;
                     } else {
-                        return "You have answered this question!";
+                        return presenter.getResString("examinator.questions-answered");
                     }
                 }).orElse(null);
     }
@@ -138,15 +138,16 @@ public class SellExaminator implements Examinator {
             Optional<User> userOpt = userAuthentication.getUser(new UserCredential(firstName, secondName));
             if (userOpt.isPresent()) {
                 user = userOpt.get();
-                return "You login as " + user.toString();
+                return String.format(presenter.getResString("examinator.login-message"),
+                        user.toString());
             }
         }
-        return "Wrong user login!";
+        return presenter.getResString("examinator.login-denied");
     }
 
     public Availability loginAvailability() {
         return examStarted
-                ? Availability.unavailable("Examination has started. You can't relogin.")
+                ? Availability.unavailable(presenter.getResString("examinator.dont-relogin"))
                 : Availability.available();
     }
 
@@ -160,7 +161,7 @@ public class SellExaminator implements Examinator {
             return availability;
         }
         if (currentQuestionIdx == 0) {
-            return Availability.unavailable("You are on the first question.");
+            return Availability.unavailable(presenter.getResString("examinator.on-first-question"));
         }
         return availability;
     }
@@ -171,7 +172,7 @@ public class SellExaminator implements Examinator {
             return availability;
         }
         if (currentQuestionIdx >= exam.questionsNumber() - 1) {
-            return Availability.unavailable("You are on the last question.");
+            return Availability.unavailable(presenter.getResString("examinator.on-last-question"));
         }
         return availability;
     }
@@ -186,7 +187,7 @@ public class SellExaminator implements Examinator {
             return availability;
         }
         if (statistics.getQuestionsNumber() < exam.questionsNumber()) {
-            return Availability.unavailable("You doesn't answer all the questions.");
+            return Availability.unavailable(presenter.getResString("examinator.do-not-finish"));
         }
         return availability;
     }
@@ -197,17 +198,17 @@ public class SellExaminator implements Examinator {
             return availability;
         }
         if (!examStarted) {
-            return Availability.unavailable("Exam wasn't started. Use 'q' to show first question.");
+            return Availability.unavailable(presenter.getResString("examinator.error-exam-not-started"));
         }
         return availability;
     }
 
     private Availability baseAvailability() {
         if (user == null) {
-            return Availability.unavailable("You are not logged in.");
+            return Availability.unavailable(presenter.getResString("examinator.error-need-user"));
         }
         if (exam == null) {
-            return Availability.unavailable("Examination information wasn't found.");
+            return Availability.unavailable(presenter.getResString("examinator.error-exam-not-found"));
         }
         return Availability.available();
     }

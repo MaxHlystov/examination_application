@@ -61,9 +61,9 @@ public class ConsolePresenter implements Presenter {
     public Optional<UserCredential> getUserCredential() {
         UserCredential userCredential = null;
         try {
-            out.println(appConfig.getMessage("authentification.whats-first-name", null));
+            out.println(getResString("authentification.whats-first-name"));
             String firstName = sc.nextLine();
-            out.println(appConfig.getMessage("authentification.whats-second-name", null));
+            out.println(getResString("authentification.whats-second-name"));
             String secondName = sc.nextLine();
             userCredential = new UserCredential(firstName, secondName);
         } catch (NoSuchElementException | IllegalStateException ignored) {
@@ -79,12 +79,12 @@ public class ConsolePresenter implements Presenter {
         showMessage(String.format(questionPrompt, number));
         showMessage(question.getTitle());
         showOptions(question.getOptions());
-        showMessage(getInputPrompt(question.getClass()));
     }
 
     @Override
     @NotNull
     public Optional<? extends Answer> readAnswer(@NotNull Question question) {
+        showMessage(getInputPrompt(question.getClass()));
         Optional<? extends Answer> result = readString().map(textAnswer -> textAnswer.split(" "))
                 .map(Arrays::stream)
                 .map(stringStream -> stringStream.filter(s -> !StringUtils.isEmpty(s))
@@ -116,7 +116,7 @@ public class ConsolePresenter implements Presenter {
 
     @Override
     public void showUserNeeded() {
-        showMessage(getResString("presenter-error-need-user"));
+        showMessage(getResString("presenter.error-need-user"));
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ConsolePresenter implements Presenter {
     }
 
     @NotNull
-    private String getResString(@NotNull String stringName) {
+    public String getResString(@NotNull String stringName) {
         return appConfig.getMessage(stringName, null);
     }
 }
