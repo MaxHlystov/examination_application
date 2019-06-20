@@ -21,32 +21,23 @@ import java.util.Optional;
 @ShellComponent("Examinator")
 @Profile("ShellConsole")
 public class SellExaminator implements Examinator {
-    private Presenter presenter;
-    private Exam exam;
-    private ExamStatistics statistics;
-    private UserAuthentication userAuthentication;
+    private final Presenter presenter;
+    private final Exam exam;
+    private final ExamStatistics statistics;
+    private final UserAuthentication userAuthentication;
     private User user;
     private int currentQuestionIdx;
     private boolean examStarted;
 
     @Autowired
-    public void setUserAuthentication(UserAuthentication userAuthentication) {
-        this.userAuthentication = userAuthentication;
-    }
-
-    @Autowired
-    public void setPresenter(Presenter presenter) {
+    public SellExaminator(Presenter presenter,
+                          Exam exam,
+                          ExamStatistics statistics,
+                          UserAuthentication userAuthentication) {
         this.presenter = presenter;
-    }
-
-    @Autowired
-    public void setStatistics(ExamStatistics statistics) {
-        this.statistics = statistics;
-    }
-
-    @Autowired
-    public void setExam(Exam exam) {
         this.exam = exam;
+        this.statistics = statistics;
+        this.userAuthentication = userAuthentication;
     }
 
     @PostConstruct

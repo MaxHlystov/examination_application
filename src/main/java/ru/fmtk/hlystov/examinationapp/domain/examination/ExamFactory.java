@@ -11,16 +11,12 @@ import java.io.InputStream;
 
 @Component
 public class ExamFactory {
-    private AppConfig appConfig;
-    QuestionsCSVLoader questionsCSVLoader;
+    private final AppConfig appConfig;
+    private final QuestionsCSVLoader questionsCSVLoader;
 
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
+    public ExamFactory(AppConfig appConfig, QuestionsCSVLoader questionsCSVLoader) {
         this.appConfig = appConfig;
-    }
-
-    @Autowired
-    public void setQuestionsCSVLoader(QuestionsCSVLoader questionsCSVLoader) {
         this.questionsCSVLoader = questionsCSVLoader;
     }
 

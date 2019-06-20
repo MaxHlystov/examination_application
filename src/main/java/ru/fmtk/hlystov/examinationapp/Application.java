@@ -20,12 +20,12 @@ import java.io.PrintStream;
 public class Application {
     @NotNull
     private static final String STRINGS_RESOURCE_BUNDLE_NAME = "strings";
-    private static ApplicationContext springContext;
     private static AppConfig appConfig;
+    private final ApplicationContext springContext;
 
     @Autowired
-    public void setSpringContext(ApplicationContext springContext) {
-        Application.springContext = springContext;
+    public Application(ApplicationContext springContext) {
+        this.springContext = springContext;
     }
 
     @Autowired
@@ -46,7 +46,7 @@ public class Application {
 
     @Bean(name = "Exam")
     public Exam createExam() {
-        ExamFactory factory = Application.springContext.getBean(ExamFactory.class);
+        ExamFactory factory = springContext.getBean(ExamFactory.class);
         return factory.createExam();
     }
 
@@ -59,7 +59,6 @@ public class Application {
     public PrintStream getConsoleOutStream() {
         return System.out;
     }
-
 
     public static AppConfig getAppConfig() {
         return appConfig;

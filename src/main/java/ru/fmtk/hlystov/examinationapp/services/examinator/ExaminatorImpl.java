@@ -22,29 +22,17 @@ import java.util.stream.IntStream;
 @Component("Examinator")
 @Profile("PureConsole")
 public class ExaminatorImpl implements Examinator, ApplicationRunner {
-    private Presenter presenter;
-    private Exam exam;
-    private ExamStatistics statistics;
-    private UserAuthentication userAuthentication;
+    private final Presenter presenter;
+    private final Exam exam;
+    private final ExamStatistics statistics;
+    private final UserAuthentication userAuthentication;
 
     @Autowired
-    public void setUserAuthentication(UserAuthentication userAuthentication) {
-        this.userAuthentication = userAuthentication;
-    }
-
-    @Autowired
-    public void setPresenter(Presenter presenter) {
+    public ExaminatorImpl(Presenter presenter, Exam exam, ExamStatistics statistics, UserAuthentication userAuthentication) {
         this.presenter = presenter;
-    }
-
-    @Autowired
-    public void setStatistics(ExamStatistics statistics) {
-        this.statistics = statistics;
-    }
-
-    @Autowired
-    public void setExam(Exam exam) {
         this.exam = exam;
+        this.statistics = statistics;
+        this.userAuthentication = userAuthentication;
     }
 
     @Override
