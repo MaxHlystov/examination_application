@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: PureConsole
+  main:
+    allow-bean-definition-overriding: true
 application:
   version: 0.0.1
 app-config:

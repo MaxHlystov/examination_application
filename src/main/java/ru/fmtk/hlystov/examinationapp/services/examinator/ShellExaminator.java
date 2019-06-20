@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @ShellComponent("Examinator")
 @Profile("ShellConsole")
-public class SellExaminator implements Examinator {
+public class ShellExaminator implements Examinator {
     private final Presenter presenter;
     private final Exam exam;
     private final ExamStatistics statistics;
@@ -30,10 +30,10 @@ public class SellExaminator implements Examinator {
     private boolean examStarted;
 
     @Autowired
-    public SellExaminator(Presenter presenter,
-                          Exam exam,
-                          ExamStatistics statistics,
-                          UserAuthentication userAuthentication) {
+    public ShellExaminator(Presenter presenter,
+                           Exam exam,
+                           ExamStatistics statistics,
+                           UserAuthentication userAuthentication) {
         this.presenter = presenter;
         this.exam = exam;
         this.statistics = statistics;

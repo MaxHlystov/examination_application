@@ -20,17 +20,15 @@ public class NumericQuestionTest {
     private String title;
     private List<String> emptyOptions;
     private Answer zeroAnswer;
-    private Application app;
-    private AppConfig appConfig;
 
     @Before
     public void initTests() {
         title = "Abcd 134 ¥";
         emptyOptions = new ArrayList<>();
         zeroAnswer = new NumericAnswer(0.0);
-        app = new Application();
-        appConfig = new AppConfig(new Locale("en", "En"),
-                app.messageSource());
+        Application app = new Application(null);
+        AppConfig appConfig = new AppConfig(new Locale("en", "En"),
+                Application.messageSource());
         appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
         app.setAppConfig(appConfig);
     }

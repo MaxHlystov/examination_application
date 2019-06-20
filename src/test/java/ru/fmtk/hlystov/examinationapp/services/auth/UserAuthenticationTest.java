@@ -23,8 +23,7 @@ public class UserAuthenticationTest {
     }
 
     private void setAppConfig(@NotNull Locale locale) {
-        Application app = new Application();
-        appConfig = new AppConfig(locale, app.messageSource());
+        appConfig = new AppConfig(locale, Application.messageSource());
         appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
     }
 

@@ -35,9 +35,8 @@ public class ConsolePresenterTest {
     @Before
     public void initTest() throws IOException {
         testConsole = new TestConsole();
-        Application app = new Application();
         AppConfig appConfig = new AppConfig(new Locale("en", "En"),
-                app.messageSource());
+                Application.messageSource());
         appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
         userCredential = new UserCredential("a", "b");
         user = new User(userCredential);
