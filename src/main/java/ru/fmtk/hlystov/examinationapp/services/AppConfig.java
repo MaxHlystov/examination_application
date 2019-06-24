@@ -12,6 +12,7 @@ import ru.fmtk.hlystov.examinationapp.Application;
 
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -50,7 +51,7 @@ public class AppConfig {
     @NotNull
     public String getMessage(@NotNull String code, @Nullable String[] args) {
         var msg = messageSource.getMessage(code, args, locale);
-        return (msg == null) ? "" : msg;
+        return Objects.requireNonNullElse(msg, "");
     }
 
     @NotNull

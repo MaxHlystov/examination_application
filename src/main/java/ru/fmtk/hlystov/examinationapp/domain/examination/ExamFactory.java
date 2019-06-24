@@ -14,7 +14,6 @@ public class ExamFactory {
     private final AppConfig appConfig;
     private final QuestionsCSVLoader questionsCSVLoader;
 
-    @Autowired
     public ExamFactory(AppConfig appConfig, QuestionsCSVLoader questionsCSVLoader) {
         this.appConfig = appConfig;
         this.questionsCSVLoader = questionsCSVLoader;

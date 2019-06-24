@@ -15,13 +15,12 @@ public class UserAuthentication {
     @NotNull
     private final AppConfig appConfig;
 
-    @Autowired
     public UserAuthentication(@Qualifier("appConfig") @NotNull AppConfig appConfig) {
         this.appConfig = appConfig;
     }
 
     @NotNull
     public Optional<User> getUser(@Nullable UserCredential userCredential) {
-        return Optional.ofNullable((userCredential != null) ? new User(userCredential) : null);
+        return Optional.ofNullable(userCredential).map(User::new);
     }
 }
