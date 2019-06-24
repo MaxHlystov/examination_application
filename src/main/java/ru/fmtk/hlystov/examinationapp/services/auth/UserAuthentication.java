@@ -22,6 +22,6 @@ public class UserAuthentication {
 
     @NotNull
     public Optional<User> getUser(@Nullable UserCredential userCredential) {
-        return Optional.ofNullable((userCredential != null) ? new User(userCredential) : null);
+        return Optional.ofNullable(userCredential).map(User::new);
     }
 }
