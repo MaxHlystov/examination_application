@@ -10,10 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ShellBannerProvider extends DefaultBannerProvider {
-    private String version;
+    private final String version;
 
-    @Value("${application.version}")
-    public void setVersion(String version) {
+    public ShellBannerProvider(@Value("${application.version}") String version) {
         this.version = version;
     }
 
@@ -27,7 +26,7 @@ public class ShellBannerProvider extends DefaultBannerProvider {
     }
 
     public String getVersion() {
-        return "0.0.1";
+        return version;
     }
 
     public String getWelcomeMessage() {
