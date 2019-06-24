@@ -2,13 +2,16 @@ package ru.fmtk.hlystov.examinationapp.domain.examination.question;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.fmtk.hlystov.examinationapp.Application;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.Answer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.AnswerResult;
 import ru.fmtk.hlystov.examinationapp.domain.examination.answer.NumericAnswer;
+import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -23,6 +26,11 @@ public class NumericQuestionTest {
         title = "Abcd 134 ¥";
         emptyOptions = new ArrayList<>();
         zeroAnswer = new NumericAnswer(0.0);
+        Application app = new Application(null);
+        AppConfig appConfig = new AppConfig(new Locale("en", "En"),
+                Application.messageSource());
+        appConfig.setBaseCSVResourceName("simple-exam-5-questions.csv");
+        app.setAppConfig(appConfig);
     }
 
     @Test

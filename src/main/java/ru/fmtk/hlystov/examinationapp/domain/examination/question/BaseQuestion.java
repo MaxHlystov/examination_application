@@ -11,6 +11,7 @@ import ru.fmtk.hlystov.examinationapp.services.AppConfig;
 import java.util.List;
 
 public abstract class BaseQuestion implements Question {
+    private final AppConfig appConfig;
     @NotNull
     private final String title;
     @NotNull
@@ -21,6 +22,7 @@ public abstract class BaseQuestion implements Question {
     public BaseQuestion(@NotNull String title,
                         @NotNull List<String> options,
                         @NotNull Answer rightAnswer) {
+        this.appConfig = Application.getAppConfig();
         this.title = title;
         this.options = options;
         this.rightAnswer = rightAnswer;
@@ -41,7 +43,6 @@ public abstract class BaseQuestion implements Question {
     @Override
     @NotNull
     public AnswerResult checkAnswers(@Nullable Answer answer) {
-        AppConfig appConfig = Application.getAppConfig();
         StringBuilder sb = new StringBuilder();
         boolean equals = rightAnswer.isEquals(answer);
         if (equals) {

@@ -1,8 +1,6 @@
 package ru.fmtk.hlystov.examinationapp.domain.examination;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Service;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
 import java.util.ArrayList;
@@ -10,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
-@ConfigurationProperties("exam")
 public class ExamImpl implements Exam {
     @NotNull
     private final List<Question> questions;
@@ -25,6 +21,7 @@ public class ExamImpl implements Exam {
     public int questionsNumber() {
         return questions.size();
     }
+
 
     @Override
     public void clear() {

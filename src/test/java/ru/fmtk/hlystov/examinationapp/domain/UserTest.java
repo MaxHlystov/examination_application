@@ -1,44 +1,57 @@
 package ru.fmtk.hlystov.examinationapp.domain;
 
+import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.lang.Nullable;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserCredential;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class UserTest {
+    private final String firstName = "First";
+    private final String secondName = "Second";
+    private final String fullName = firstName + " " + secondName;
+
     @Nullable
     private User userAB;
+    @Nullable
+    private UserCredential userCredential;
 
     @Before
     public void initUserTest() {
-        userAB = new User("a", "b");
+        userCredential = new UserCredential(firstName, secondName);
+        userAB = new User(userCredential);
     }
 
     @Test
     public void getFirstName() {
         if (userAB != null) {
-            assertEquals("a", userAB.getFirstName());
+            assertEquals(firstName, userAB.getFirstName());
         }
     }
 
     @Test
     public void getSecondName() {
         if (userAB != null) {
-            assertEquals("b", userAB.getSecondName());
+            assertEquals(secondName, userAB.getSecondName());
         }
     }
 
     @Test
     public void toStringTest() {
         if (userAB != null) {
-            assertEquals("a b", userAB.toString());
+            assertEquals(fullName, userAB.toString());
         }
     }
 
     @Test
     public void equalsTest() {
-        assertEquals(userAB, new User("a", "b"));
+        assertEquals(userAB, new User(userCredential));
     }
 
+    @Test
+    public void notEqualsTest() {
+        assertNotEquals(userAB, new User(new UserCredential(firstName, "#1234")));
+    }
 }

@@ -22,7 +22,10 @@ public class AppConfig {
     @NotNull
     private Locale locale;
     @NotNull
+    private String version;
+    @NotNull
     private final MessageSource messageSource;
+    private int rightAnswersToSuccess;
 
     public AppConfig(@Value("#{ systemProperties['user.language'] + '_' + systemProperties['user.country'] }")
                      @NotNull Locale locale,
@@ -71,5 +74,13 @@ public class AppConfig {
 
     public void setBaseCSVResourceName(@NotNull String baseCSVResourceName) {
         this.baseCSVResourceName = baseCSVResourceName;
+    }
+
+    public int getRightAnswersToSuccess() {
+        return rightAnswersToSuccess;
+    }
+
+    public void setRightAnswersToSuccess(int rightAnswersToSuccess) {
+        this.rightAnswersToSuccess = rightAnswersToSuccess;
     }
 }

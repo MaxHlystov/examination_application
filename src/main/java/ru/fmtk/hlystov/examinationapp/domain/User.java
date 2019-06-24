@@ -1,6 +1,7 @@
 package ru.fmtk.hlystov.examinationapp.domain;
 
 import org.jetbrains.annotations.NotNull;
+import ru.fmtk.hlystov.examinationapp.services.auth.UserCredential;
 
 import java.util.Objects;
 
@@ -9,9 +10,9 @@ public class User {
     private final String secondName;
 
 
-    public User(@NotNull String firstName, @NotNull String secondName) {
-        this.firstName = firstName;
-        this.secondName = secondName;
+    public User(@NotNull UserCredential userCredential) {
+        this.firstName = (userCredential.getFirstName() == null) ? "" : userCredential.getFirstName();
+        this.secondName = (userCredential.getSecondName() == null) ? "" : userCredential.getSecondName();
     }
 
     @NotNull

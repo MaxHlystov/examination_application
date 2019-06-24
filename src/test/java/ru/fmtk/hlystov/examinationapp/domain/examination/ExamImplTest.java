@@ -6,11 +6,8 @@ import ru.fmtk.hlystov.examinationapp.domain.examination.answer.NumericAnswer;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.NumericQuestion;
 import ru.fmtk.hlystov.examinationapp.domain.examination.question.Question;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
