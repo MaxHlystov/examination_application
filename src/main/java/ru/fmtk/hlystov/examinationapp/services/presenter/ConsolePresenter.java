@@ -30,7 +30,6 @@ public class ConsolePresenter implements Presenter {
     @NotNull
     private PrintStream out;
 
-    @Autowired
     public ConsolePresenter(@NotNull AppConfig appConfig,
                             @NotNull StringsToAnswerConverter answerConverter,
                             @NotNull InputStream in,

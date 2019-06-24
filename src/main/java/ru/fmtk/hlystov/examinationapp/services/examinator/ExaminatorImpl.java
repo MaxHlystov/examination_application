@@ -27,7 +27,6 @@ public class ExaminatorImpl implements Examinator, ApplicationRunner {
     private final ExamStatistics statistics;
     private final UserAuthentication userAuthentication;
 
-    @Autowired
     public ExaminatorImpl(Presenter presenter, Exam exam, ExamStatistics statistics, UserAuthentication userAuthentication) {
         this.presenter = presenter;
         this.exam = exam;

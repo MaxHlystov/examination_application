@@ -29,7 +29,6 @@ public class ShellExaminator implements Examinator {
     private int currentQuestionIdx;
     private boolean examStarted;
 
-    @Autowired
     public ShellExaminator(Presenter presenter,
                            Exam exam,
                            ExamStatistics statistics,

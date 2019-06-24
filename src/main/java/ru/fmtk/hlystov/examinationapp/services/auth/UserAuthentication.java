@@ -15,7 +15,6 @@ public class UserAuthentication {
     @NotNull
     private final AppConfig appConfig;
 
-    @Autowired
     public UserAuthentication(@Qualifier("appConfig") @NotNull AppConfig appConfig) {
         this.appConfig = appConfig;
     }
