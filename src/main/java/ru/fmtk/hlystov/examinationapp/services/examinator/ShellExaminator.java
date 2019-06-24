@@ -106,17 +106,15 @@ public class ShellExaminator implements Examinator {
     }
 
     @ShellMethod(value = "Show current statistics.", key = "stat")
-    public String statistics() {
+    public void statistics() {
         presenter.showStatistics(statistics);
-        return null;
     }
 
     @ShellMethod(value = "Finish exam and show results.", key = "finish")
-    public String finish() {
+    public void finish() {
         presenter.showStatistics(statistics);
         presenter.showExamResult(exam.getNumberToSuccess() <= statistics.getRightQuestions());
         presenter.showGoodBy();
-        return null;
     }
 
     @ShellMethod(value = "Login as a student.", key = {"login", "l"})
